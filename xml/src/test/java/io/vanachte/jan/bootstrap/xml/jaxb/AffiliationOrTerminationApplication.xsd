@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by SMALS (SMALS) -->
+<xs:schema xmlns="http://www.mercurius.vlaanderen.be/payload/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.mercurius.vlaanderen.be/payload/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0.0">
+	<xs:annotation>
+		<xs:documentation>=========== Version 3.0.0: PRM18.09 (gaat samen met PRM18.12) =========</xs:documentation>
+		<xs:documentation>Adaptation in Common.xsd: </xs:documentation>
+		<xs:documentation>-- ContributionType: made fields DatePaid en IC obligatory and defined the type of the field IC as ICType </xs:documentation>
+		<xs:documentation>-- AffiliationCodeType: added AffiliationCode 52 and 91 </xs:documentation>
+		<xs:documentation>-- TerminationCodeType: added TerminationCode 1052 and 1091, changed annotation of TerminationCode 1020</xs:documentation>
+		<xs:documentation>=========== Version 2.0.1 =========</xs:documentation>
+		<xs:documentation>v2.0.1: aanpassing in Common.xsd -- RetryResponse: Retry optioneel gemaakt</xs:documentation>
+		<xs:documentation>v2.0.0: AffiliationOrTerminationApplicationRequest: added AffiliationWithId element and AffiliationWithTermination element, changed Affiliation element</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="Common.xsd"/>
+	<xs:element name="AffiliationOrTerminationApplicationRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Dossier" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SSIN" type="SSINType"/>
+							<xs:choice>
+								<xs:element name="AffiliationWithId">
+									<xs:annotation>
+										<xs:documentation>
+											<p>Groeperend element voor de informatie betreffende een update van een bestaande aansluiting.</p>
+											<p>Principe is dat steeds alle velden van de aansluiting worden doorgegeven. De aansluiting in de databank wordt overschreven met deze waarden indien aan alle controles uit UC23 voldaan</p>
+											<p>Dit element mag slechts 1 keer voorkomen.</p>
+										</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="AffiliationId" type="xs:string" nillable="false">
+												<xs:annotation>
+													<xs:documentation>Uniek aansluitingsnummer.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="AffiliationCode" type="AffiliationCodeType" nillable="true">
+												<xs:annotation>
+													<xs:documentation>
+														<p>Aansluitcode</p>
+													</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="AffiliationYear" type="YearType" nillable="true">
+												<xs:annotation>
+													<xs:documentation>Jaartal waarin de aansluiting start.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="TerminationCode" type="TerminationCodeType" nillable="true">
+												<xs:annotation>
+													<xs:documentation>
+														<p>Afsluitcode</p>
+													</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="TerminationYear" type="YearType" nillable="true">
+												<xs:annotation>
+													<xs:documentation>Jaartal waarin de aansluiting wordt beëindigd.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="InternalDepartment" type="xs:string" nillable="true">
+												<xs:annotation>
+													<xs:documentation>Interne afdeling ZK</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="Affiliation">
+									<xs:annotation>
+										<xs:documentation>Groeperend element voor de informatie betreffende een aansluitingsaanvraag voor een dossier. Dit element mag slechts 1 keer voorkomen.</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="AffiliationCode" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>
+														<p>Aansluitcode</p>
+														<p>Type: AffiliationCodeType</p>
+													</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="AffiliationYear" type="year">
+												<xs:annotation>
+													<xs:documentation>Jaartal waarin de aansluiting start.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="InternalDepartment" type="xs:string" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Interne afdeling ZK</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="Contribution" type="ContributionType" minOccurs="0" maxOccurs="unbounded">
+												<xs:annotation>
+													<xs:documentation>
+														<p>Groeperend element voor de bijdragegegevens gekoppeld aan de aansluitingsaanvraag. Er kunnen meerdere zulke elementen zijn als er voor meerdere jaren betaald wordt bij de aansluiting.</p>
+														<p>Bij een aansluitingsaanvraag kan het subelement Type enkel ‘betaling’ zijn. </p>
+													</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="Termination">
+									<xs:annotation>
+										<xs:documentation>Groeperend element voor de informatie betreffende een afsluitingsaanvraag voor een dossier.</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="TerminationCode" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>
+														<p>Afsluitcode</p>
+														<p>Type: TerminationCodeType</p>
+													</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="TerminationYear" type="year">
+												<xs:annotation>
+													<xs:documentation>Jaartal waarin de aansluiting wordt beëindigd.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="AffiliationWithTermination">
+									<xs:annotation>
+										<xs:documentation>
+											<p>Groeperend element voor de informatie betreffende een aansluiting met bijhorende afsluiting.</p>
+										</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="AffiliationCode" type="AffiliationCodeType">
+												<xs:annotation>
+													<xs:documentation>
+														<p>Aansluitcode</p>
+													</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="AffiliationYear" type="YearType">
+												<xs:annotation>
+													<xs:documentation>Jaartal waarin de aansluiting start.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="TerminationCode" type="TerminationCodeType">
+												<xs:annotation>
+													<xs:documentation>
+														<p>Afsluitcode</p>
+													</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="TerminationYear" type="YearType">
+												<xs:annotation>
+													<xs:documentation>Jaartal waarin de aansluiting wordt beëindigd.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="InternalDepartment" type="xs:string" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Interne afdeling ZK</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="Contribution" type="ContributionType" maxOccurs="unbounded">
+												<xs:annotation>
+													<xs:documentation>
+														<p>Groeperend element voor de bijdragegegevens gekoppeld aan de aansluitingsaanvraag. Er kunnen meerdere zulke elementen zijn als er voor meerdere jaren betaald wordt bij de aansluiting.</p>
+														<p>Bij een aansluitingsaanvraag kan het subelement Type enkel ‘betaling’ zijn. </p>
+													</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:choice>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AffiliationOrTerminationApplicationResponse" type="RetryResponse"/>
+</xs:schema>

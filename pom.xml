@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>jan.vanachte</groupId>
+    <artifactId>java-bootstrap</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>xml</module>
+        <module>jpa-hibernate-springboot</module>
+        <module>cucumber</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <org.project.lombok.version>1.18.4</org.project.lombok.version><!-- 1.20 gives problems with JDK10 -->
+        <org.junit.jupiter.version>5.3.2</org.junit.jupiter.version>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.0.RELEASE</version>
+    </parent>
+
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.jvnet.jaxb2.maven2</groupId>-->
+                <!--<artifactId>maven-jaxb2-plugin</artifactId>-->
+                <!--<version>0.14.0</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>tbd</id>-->
+                        <!--<phase>generate-sources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>generate</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<verbose>true</verbose>-->
+                            <!--<schemaDirectory>${basedir}/src/main/java</schemaDirectory>-->
+                            <!--<schemaIncludes>-->
+                                <!--<include>io/vanachte/jan/bootstrap/xml/jaxb/AffiliationOrTerminationApplication.xsd</include>-->
+                                <!--<include>io/vanachte/jan/bootstrap/xml/jaxb/Common.xsd</include>-->
+                            <!--</schemaIncludes>-->
+                            <!--<bindingIncludes>-->
+                                <!--<include>bindings/*.xjb</include>-->
+                            <!--</bindingIncludes>-->
+                            <!--<extension>true</extension>-->
+                            <!--<generateDirectory>${basedir}/target/generated-sources</generateDirectory>-->
+                            <!--<args>-->
+                                <!--<arg>-no-header</arg>-->
+                            <!--</args>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</build>-->
+
+    <dependencies>
+        <dependency>
+            <!--https://gualtierotesta.wordpress.com/2015/11/01/tutorial-logging-during-tests/ -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.25</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.3.1</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+
+</project>

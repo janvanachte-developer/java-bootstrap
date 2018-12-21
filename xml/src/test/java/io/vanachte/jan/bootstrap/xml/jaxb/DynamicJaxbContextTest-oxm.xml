@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<xml-bindings xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
+              package-name="blog.objectgraphs.dynamic">
+    <java-types>
+        <java-type name="Customer">
+            <xml-named-object-graphs>
+                <xml-named-object-graph name="contact info">
+                    <xml-named-attribute-node name="name"/>
+                    <xml-named-attribute-node name="billingAddress"
+                                              subgraph="location"/>
+                    <xml-named-attribute-node name="phoneNumbers"
+                                              subgraph="simple"/>
+                    <xml-named-subgraph name="location">
+                        <xml-named-attribute-node name="city"/>
+                        <xml-named-attribute-node name="province"/>
+                    </xml-named-subgraph>
+                </xml-named-object-graph>
+            </xml-named-object-graphs>
+            <xml-root-element/>
+            <java-attributes>
+                <xml-attribute java-attribute="id" type="java.lang.Integer"/>
+                <xml-element java-attribute="name" type="java.lang.String"/>
+                <xml-element java-attribute="billingAddress"
+                             type="blog.objectgraphs.dynamic.Address"/>
+                <xml-element java-attribute="shippingAddress"
+                             type="blog.objectgraphs.dynamic.Address"/>
+                <xml-element
+                        java-attribute="phoneNumbers"
+                        name="phoneNumber"
+                        type="blog.objectgraphs.dynamic.PhoneNumber"
+                        container-type="java.util.List">
+                    <xml-element-wrapper/>
+                </xml-element>
+            </java-attributes>
+        </java-type>
+        <java-type name="Address">
+            <java-attributes>
+                <xml-element java-attribute="street" type="java.lang.String"/>
+                <xml-element java-attribute="city" type="java.lang.String"/>
+                <xml-element java-attribute="province" type="java.lang.String"/>
+                <xml-element java-attribute="postalCode" type="java.lang.String"/>
+            </java-attributes>
+        </java-type>
+        <java-type name="PhoneNumber">
+            <xml-named-object-graphs>
+                <xml-named-object-graph name="simple">
+                    <xml-named-attribute-node name="value"/>
+                </xml-named-object-graph>
+            </xml-named-object-graphs>
+            <java-attributes>
+                <xml-attribute java-attribute="type" type="java.lang.String"/>
+                <xml-value java-attribute="value" type="java.lang.String"/>
+            </java-attributes>
+        </java-type>
+    </java-types>
+</xml-bindings>

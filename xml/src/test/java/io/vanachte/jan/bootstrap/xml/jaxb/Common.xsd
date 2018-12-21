@@ -1,0 +1,1944 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2017 sp2 (x64) (http://www.altova.com) by  (Smals vzw/asbl) -->
+<xs:schema xmlns="http://www.mercurius.vlaanderen.be/payload/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.mercurius.vlaanderen.be/payload/v1" elementFormDefault="qualified" version="3.0.0">
+	<xs:annotation>
+		<xs:documentation>=========== Version 3.0.0: PRM18.12 (gaat samen met PRM18.09) =========</xs:documentation>
+		<xs:documentation>-- ExemptionReasonType: added Reason 31 = behartenswaardig</xs:documentation>
+		<xs:documentation>-- Added Types: RecruitabilityType</xs:documentation>
+		<xs:documentation>-- AffiliationType: removed field ExOfficio</xs:documentation>
+		<xs:documentation>-- ConsultAffiliabilityViewResponse: defined the type of field Recruitability as RecruitabilityType,</xs:documentation>
+		<xs:documentation>										added Forbidden and Restrictive,</xs:documentation>
+		<xs:documentation>										removed Exemption</xs:documentation>
+		<xs:documentation>-- RecruitabilityType: added 4 = restrictief</xs:documentation>
+		<xs:documentation>-- WaitingPeriodType: changed annotation</xs:documentation>
+		<xs:documentation>=========== Version 3.0.0: PRM18.09 (gaat samen met PRM18.12) =========</xs:documentation>
+		<xs:documentation>-- Added Types: ExemptionReasonType / ICType / ContributionsOverdueStatusType and RegionType</xs:documentation>
+		<xs:documentation>-- Removed Types: AddressType and ResidenceType (available in VSB_Common.xsd with optional field CountryName)</xs:documentation>
+		<xs:documentation>-- AffiliationCodeType: added AffiliationCode 52 and 91, changed annotation of AffiliationCode 20, 21 and 40</xs:documentation>
+		<xs:documentation>-- AffiliationExemption: defined the type of the field Reason as ExcemptionReasonType with new value 30</xs:documentation>
+		<xs:documentation>-- AffiliationObligationType: added AffiliationObligation 4 = restrictief</xs:documentation>
+		<xs:documentation>-- AffiliationType: defined the type of the fields AffiliationCode and TerminationCode as AffilationCodeType and TerminationCodeType with the new values,
+											added field AffiliationType</xs:documentation>
+		<xs:documentation>-- AffiliationTypeType: added AffiliationType 5 = administratief</xs:documentation>
+		<xs:documentation>-- ConsultAffiliabilityViewResponse: Removed the field ExceptionPeriod and added field CurrentYearContributionsOverdueStatus,
+									Adaptation in AffiliationTypeType: Affiliation.AffiliationType and CurrentAffiliation.AffiliationType can have the new value of AffiliationType</xs:documentation>
+		<xs:documentation>-- ContributionType: made fields DatePaid en IC obligatory and defined the type of the field IC as ICType </xs:documentation>
+		<xs:documentation>-- ExemptionReasonType: added Reason 30 = wordt restrictief aansluitbaar</xs:documentation>
+		<xs:documentation>-- RegionType: added Region 3 = Wallonie</xs:documentation>
+		<xs:documentation>-- SuspensionType: defined the type of the field Region as RegionType </xs:documentation>
+		<xs:documentation>-- TerminationCodeType: added TerminationCode 1052 and 1091, changed annotation of TerminationCode 1020</xs:documentation>
+		<xs:documentation>-- YearDataDetailType: replaced StatusPeriod by ContributionsOverdueStatus, defined the type of the field IC as ICType and made field Detail required</xs:documentation>
+		<xs:documentation>=========== Version 2.2.2 =========</xs:documentation>
+		<xs:documentation>v2.2.2: DPZ-6072 -- WaitingPeriodType - uitleg aangepast bij element NumberOfYears (berekening met parameter)</xs:documentation>
+		<xs:documentation>v2.2.1: TerminationCodeType - added termination code 9880</xs:documentation>
+		<xs:documentation>v2.2.0: added AffiliationObligation element to YearDataDetailType / added AffiliationObligationType (moved from CommonTypesForDoc.xsd)</xs:documentation>
+		<xs:documentation>v2.1.1: RetryResponse: Retry optioneel gemaakt / ContributionType: constraint toegevoegd aan DatePaid</xs:documentation>
+		<xs:documentation>v2.1.0: ConsultAffiliabilityViewResponse - Affiliation-element komt nu per aansluiting voor en niet meer per periode van aansluiting + PlaceOfEmployment-element toegevoegd aan YearDataDetailType</xs:documentation>
+		<xs:documentation>v2.0.0: error handling: added Warnings + adapt Error-element / changes of element ResidenceType / adapt ContributionDueType / adapt ConsultAffiliabilityViewResponse / added AffiliationCodeType</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="AbstractRegisteredLetterType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>used: Common.xsd (RegisteredLetterType, RegisteredLetterViewType)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DateSent" type="xs:date"/>
+			<xs:element name="AddressType" type="xs:string"/>
+			<xs:element name="Address" type="RegisteredLetterAddress"/>
+			<xs:element name="MailReturned" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>used: Common.xsd(InitiatingActionType, ResolvingActionType)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ActionId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Uniek nummer dat de actie identificeert.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActionName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Naam van de actie</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActionTypeId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Uniek id dat het type van de  actie identificeert </p>
+						<p>Type: ActionTypeType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreationTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Tijdstip waarop de actie werd aangemaakt.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Blocking" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Geeft weer of de actie uitgevoerd wordt als het onderzoek nog bezig is, of niet.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AffiliationCodeType">
+		<xs:annotation>
+			<xs:documentation>v2.0.0: defined affiliation code type.</xs:documentation>
+			<xs:documentation>used: AffiliationOrTerminationApplication.xsd, SendDossier.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="00">
+				<xs:annotation>
+					<xs:documentation>
+						<p>aansluiting bij opstart zorgverzekering</p>
+						<p>deze aansluitcode is enkel geldig indien startjaar aansluiting &lt; 2002</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="10">
+				<xs:annotation>
+					<xs:documentation>bereiken leeftijd</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="20">
+				<xs:annotation>
+					<xs:documentation>indienen aanvraag tegemoetkoming (jonger dan 26 jaar)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="21">
+				<xs:annotation>
+					<xs:documentation>goedgekeurde aanvraag tegemoetkoming (jonger dan 26 jaar, is effectief lid van de zorgkas)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="30">
+				<xs:annotation>
+					<xs:documentation>komen wonen in Vlaanderen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="40">
+				<xs:annotation>
+					<xs:documentation>vrijwillige aansluiting in Brussel (en tijdige aansluiting)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="50">
+				<xs:annotation>
+					<xs:documentation>vrijwillige aansluiting in Brussel (en laattijdige aansluiting)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="52">
+				<xs:annotation>
+					<xs:documentation>vrijwillige aansluiting in Vlaanderen voor persoon met een verdragsvrijstelling (b.v. Uitgaande Grensarbeider)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="71">
+				<xs:annotation>
+					<xs:documentation>mutatie van CM-zorgkas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="72">
+				<xs:annotation>
+					<xs:documentation>mutatie van Neutrale Zorgkas Vlaanderen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="73">
+				<xs:annotation>
+					<xs:documentation>mutatie van Zorgkas van de Socialistische Mutualiteiten</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="74">
+				<xs:annotation>
+					<xs:documentation>mutatie van Zorgkas van de Liberale Ziekenfondsen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="75">
+				<xs:annotation>
+					<xs:documentation>mutatie van Zorgkas van de Onafhankelijke Ziekenfondsen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="76">
+				<xs:annotation>
+					<xs:documentation>mutatie van Vlaamse Zorgkas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="77">
+				<xs:annotation>
+					<xs:documentation>mutatie van Ethias Zorgkas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="78">
+				<xs:annotation>
+					<xs:documentation>mutatie van Zorgkas DKV Belgium</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="80">
+				<xs:annotation>
+					<xs:documentation>
+						<p>ambtshalve aansluiting</p>
+						<p>deze aansluitcode is enkel geldig indien startjaar aansluiting &lt; 2012</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="85">
+				<xs:annotation>
+					<xs:documentation>
+						<p>aansluiting van persoon die inkomende grensarbeider is of die vroeger van aansluiting vrijgesteld was</p>
+						<p>deze aansluitcode is enkel geldig indien startjaar aansluiting &lt; 2012</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="86">
+				<xs:annotation>
+					<xs:documentation>aansluiting van persoon die inkomende grensarbeider is</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="87">
+				<xs:annotation>
+					<xs:documentation>aansluiting van persoon die vroeger van aansluiting vrijgesteld was</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="90">
+				<xs:annotation>
+					<xs:documentation>onbekend</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="91">
+				<xs:annotation>
+					<xs:documentation>administratieve aansluiting van persoon met zorgticket en/of mobiliteitshulpmiddel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="99">
+				<xs:annotation>
+					<xs:documentation>annulatie afsluiting</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AffiliationExemption">
+		<xs:annotation>
+			<xs:documentation>
+				<p>Groeperend element voor een jaar waarvoor er vrijstelling van aansluitplicht is.</p>
+				<p>Dit element bevat niet alle jaren waarvoor in jaargegeven de Aansluitplicht == "verboden", maar enkel die jaren waarvoor er een actieve verdragsvrijstelling met aansluitplichteffect=verbodenis.</p>
+				<p>Registervrijstellingen en geannuleerde vrijstellingen worden hier dus niet weergegeven.</p>
+			</xs:documentation>
+			<xs:documentation>used: ConsultAffiliationView.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Year" type="year">
+				<xs:annotation>
+					<xs:documentation>Een jaar waarvoor het dossier een actieve verdragsvrijstelling heeft met aansluitplichteffect=verboden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reason" type="ExemptionReasonType">
+				<xs:annotation>
+					<xs:documentation>
+						<p>De reden voor de vrijstelling van aansluitplicht voor het betrefende jaar. Dit is steeds exact 1 reden.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AffiliationObligationType">
+		<xs:annotation>
+			<xs:documentation>mogelijke waarden voor Aansluitplicht</xs:documentation>
+			<xs:documentation>used: Common.xsd (YearDataDetailType)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>verboden</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>vrijwillig</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>verplicht</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>restrictief</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AffiliationTerminationAnswerType">
+		<xs:annotation>
+			<xs:documentation>mogelijke waarden voor AanvraagStatus</xs:documentation>
+			<xs:documentation>used: AnswerAffiliationOrTerminationApplication.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>aanvaard</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>geweigerd</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>in onderzoek - initiërende actie</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation>in onderzoek - oplossende actie</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AffiliationType">
+		<xs:annotation>
+			<xs:documentation>used:ConsultAffiliationView.xsd, SendDossier.xsd, DF96OpenKszInscriptions.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AffiliationId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Uniek aansluitingsnummer</p>
+						<p>Dit element is aanwezig voor elke aansluitig. Een ZK kan enkel de officiele of administratieve aansluitingen wijzigen waarvoor zij de toegewezen ZK is.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartYear" type="year">
+				<xs:annotation>
+					<xs:documentation>StartJaar aansluiting</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndYear" type="year" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>EindJaar aansluiting</p>
+						<p>Dit element zal niet aanwezig zijn als de aansluiting nog lopende is.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CareUnitCode" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>ZorgkasCode</p>
+						<p>Type: CareUnitCodeType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InternalDepartment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>InterneAfdelingZK</p>
+						<p>Zal enkel aanwezig zijn als dit doorgegeven is bij de aansluitingsaanvraag en als het een aansluiting betreft bij de huidige toegewezen zorgkas.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AffiliationCode" type="AffiliationCodeType">
+				<xs:annotation>
+					<xs:documentation>
+						<p>AansluitCode </p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationCode" type="TerminationCodeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>AfsluitCode </p>
+						<p>Enkel aanwezig indien aansluiting beëindigd is.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AffiliationType" type="AffiliationTypeType">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Type aansluiting </p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AffiliationTypeType">
+		<xs:annotation>
+			<xs:documentation>v2.0.0: defined affiliation type type.</xs:documentation>
+			<xs:documentation>used: Common.xsd (ConsultAffiliabilityViewResponse)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>officieel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>officieus</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>ambtshalve</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>geannuleerd</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation>administratief</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="amount">
+		<xs:annotation>
+			<xs:documentation>used: Common.xsd (ContributionDueForYearType, ContributionType, FineType, YearDataDetailType), CreateFines.xsd, UpdateFines.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:minInclusive value="0"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CareUnitCodeType">
+		<xs:annotation>
+			<xs:documentation>mogelijke waarden voor ZKCode</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="180">
+				<xs:annotation>
+					<xs:documentation>CM-Zorgkas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="280">
+				<xs:annotation>
+					<xs:documentation>Neutrale Zorgkas Vlaanderen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="380">
+				<xs:annotation>
+					<xs:documentation>Zorgkas van de Socialistische Mutualiteiten</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="480">
+				<xs:annotation>
+					<xs:documentation>Zorgkas van de Liberale Ziekenfondsen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="580">
+				<xs:annotation>
+					<xs:documentation>Zorgkas van de Onafhankelijke Ziekenfondsen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="680">
+				<xs:annotation>
+					<xs:documentation>Vlaamse Zorgkas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="780">
+				<xs:annotation>
+					<xs:documentation>Ethias Zorgkas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="880">
+				<xs:annotation>
+					<xs:documentation>Zorgkas DKV Belgium</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CollectionManagerType">
+		<xs:annotation>
+			<xs:documentation>v2.0.0: defined collection manager type.</xs:documentation>
+			<xs:documentation>used: Common.xsd (ContributionDueForYearType)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>ZK</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>ZF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ConsultAffiliabilityViewResponse">
+		<xs:annotation>
+			<xs:documentation>v2.0.0: added fields AffiliationType, CurrentAffiliation, CollectionManager and Warnings and adapt Errors</xs:documentation>
+			<xs:documentation>used: ConsultAffiliabilityView.xsd, AnswerConsultAffiliabilityViewBulk.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SSIN" type="SSINType">
+				<xs:annotation>
+					<xs:documentation>Dit element is identiek aan SSIN uit de request en is bedoeld als verificatie.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TimePeriod" type="TimePeriod" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Dit element is identiek aan TimePeriod uit de request en is bedoeld als verificatie.</p>
+						<p>Als er geen tijdsperiode wordt opgegeven, dan zal de aansluitbaarheid over heel de loopbaan van het lid worden nagegegaan. Deze start vanaf wanneer er een dossier is voor dit lid.</p>
+						<p>Voor een periode die in de toekomst ligt (of eindigt in de toekomst) zal de reeds gekende informatie getoond worden. Als er geen vrijstellingen zijn wordt er vanuitgegaan dat de aansluitplicht, vrijwillige aansluiting en aansluiting gewoon doorlopen. Voor de toekomst is het beeld dus onder voorbehoud.</p>
+						<p>Als een periode uit de response (deels) overlapt met TimePeriod, dan zullen de volledige periodes in de response meegegeven worden.</p>
+						<p>De elementen Recruitability, CurrentAffiliation, ExceptionPeriod en ContributionDueForYear in het antwoord zijn onafhankelijk van de gebruikte tijdsperiode. Zij geven steeds de situatie weer op het moment van het opvragen.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="Obligation" type="PeriodWithStartYear" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>
+								<p>Groeperend element voor een periode waarin er aansluitplicht is.</p>
+								<p>De huidige periode zal geen eindjaar hebben (als er geen vrijstellingen bekend zijn voor de toekomst).</p>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Voluntary" type="PeriodWithStartYear" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>
+								<p>Groeperend element voor een periode waarin er vrijwillige aansluiting mogelijk is.</p>
+								<p>De huidige periode zal geen eindjaar hebben (als er geen vrijstellingen bekend zijn voor de toekomst).</p>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Forbidden" type="PeriodWithStartYear" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>
+								<p>Groeperend element voor een periode waarin geen aansluiting mogelijk is.</p>
+								<p>De huidige periode zal geen eindjaar hebben (als er geen vrijstellingen bekend zijn voor de toekomst).</p>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Restrictive" type="PeriodWithStartYear" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>
+								<p>Groeperend element voor een periode met restrictieve aansluitplicht waarin enkel een administatieve aansluiting mogelijk is.</p>
+								<p>De huidige periode zal geen eindjaar hebben (als er geen vrijstellingen bekend zijn voor de toekomst).</p>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Affiliation" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Groeperend element voor een aansluiting (officieel, ambtshalve of administratief) bij een zorgkas. Per aansluiting zal er een Affiliation-element zijn.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="PeriodWithStartYear">
+									<xs:sequence>
+										<xs:element name="CareUnitType" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>
+													<p>Het type van zorgkas (mutualistisch of niet-mutualisitisch) wordt aangegeven.</p>
+													<p>CareUnitTypeType</p>
+												</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="AffiliationType" type="AffiliationTypeType">
+											<xs:annotation>
+												<xs:documentation>
+													<p>Het type aansluiting (officieel, ambtshalve of administratief) wordt aangegeven.</p>
+												</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Recruitability" type="RecruitabilityType">
+						<xs:annotation>
+							<xs:documentation>
+								<p>Werfbaarheid van de persoon op het moment van opvragen</p>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CurrentAffiliation" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Groeperend element voor informatie over de huidige aansluiting.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="PeriodWithStartYear">
+									<xs:sequence>
+										<xs:element name="CareUnitCode" type="CareUnitCodeType">
+											<xs:annotation>
+												<xs:documentation>
+													<p>ZorgkasCode</p>
+												</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="AffiliationType" type="AffiliationTypeType">
+											<xs:annotation>
+												<xs:documentation>
+													<p>AansluitingsType</p>
+												</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="CurrentYearContributionsOverdueStatus" type="ContributionsOverdueStatusType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>
+								<p> Geeft weer of persoon nog achterstallige bijdragen heeft (bij AVSB, bij een ZK) </p>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContributionDueForYear" type="ContributionDueForYearType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:element ref="Errors" minOccurs="0"/>
+			</xs:choice>
+			<xs:element ref="Warnings" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConsultViewRequest">
+		<xs:annotation>
+			<xs:documentation>used: ConsultCareerView.xsd, ConsultSSINView.xsd, ConsultSanctionMeasuresView.xsd, ConsultSuspensionView.xsd, ConsultWaitingPeriodView.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SSIN" type="SSINType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConsultViewWithTimePeriodRequest">
+		<xs:annotation>
+			<xs:documentation>used: ConsultAffiliabilityView.xsd, ConsultAffiliationView.xsd, ConsultContributionObligationView.xsd, ConsultContributionView.xsd, ConsultExemptionView.xsd, ConsultFineView.xsd, ConsultMutationView.xsd, ConsultSuspensionFineYearView.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SSIN" type="SSINType"/>
+			<xs:element name="TimePeriod" type="TimePeriod" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContributionDueForYearType">
+		<xs:annotation>
+			<xs:documentation>v2.0.0: added field CollectionManager </xs:documentation>
+			<xs:documentation>used: Common.xsd (ConsultAffiliabilityViewResponse)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Year" type="year">
+				<xs:annotation>
+					<xs:documentation>jaartal</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContributionDue" type="amount">
+				<xs:annotation>
+					<xs:documentation>
+						<p>de verschuldigde bijdrage</p>
+						<p>De waarde van dit veld wordt als volgt berekend: te betalen bijdrage – betaald bedrag</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DueDateSuspension" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Uiterste betaaldatum om opschorting te vermijden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CollectionManager" type="CollectionManagerType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Inningsverantwoordelijke</p>
+						<p>Type: CollectionManagerType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ContributionsOverdueStatusType">
+		<xs:annotation>
+			<xs:documentation>mogelijke waarden voor AchterstalligeBijdragenStatus</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>onbekend</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>geen achterstallige premies</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>achterstallige premies bij AVSB</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>minstens 1 achterstallige premie bij ZK</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ContributionType">
+		<xs:annotation>
+			<xs:documentation>used: YearlyContribution.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Year" type="year">
+				<xs:annotation>
+					<xs:documentation>Bijdragejaar (&gt;=2001)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AmountPaid" type="amount">
+				<xs:annotation>
+					<xs:documentation>Betaald bedrag</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DatePaid">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Betaaldatum</p>
+						<p>Moet &gt;= 2001-01-01</p>
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:date">
+						<xs:minInclusive value="2001-01-01"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IC" type="ICType">
+				<xs:annotation>
+					<xs:documentation>
+						<p>VT</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>BetalingsType </p>
+						<p>Type: ContributionTypeType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>BetalingsStatus</p>
+						<p>Type: ContributionStatusType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PlaceOfEmployment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>PlaatsVanTewerkstelling gemeld door ZK </p>
+						<p>Type: PlaceOfEmploymentType</p>
+						<p>De zorgkas kan een specifieke plaats van tewerkstelling doorgeven als ze deze informatie heeft. Dit is enkel nodig voor inkomende grensarbeiders.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReasonCancelledSuspension" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>RedenOpheffingOpschorting </p>
+						<p>Type: ReasonCancellationType</p>
+						<p>Als er een reden wordt gegeven voor de opheffing van de opschorting, wordt de opschorting opgeheven. </p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReasonCancelledFineYear" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>RedenOpheffingBoetejaar </p>
+						<p>Type: ReasonCancellationType</p>
+						<p>Als er een reden wordt gegeven voor de opheffing van een boetejaar, wordt het boetejaar opgeheven. </p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="countryNisCode">
+		<xs:annotation>
+			<xs:documentation>used: Common.xsd (RegisteredLetterAddress)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:short">
+			<xs:minInclusive value="100"/>
+			<xs:maxInclusive value="999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Errors">
+		<xs:annotation>
+			<xs:documentation>Groeperend element voor alle fouten.</xs:documentation>
+			<xs:documentation>used: AnswerAffiliationOrTerminationApplication.xsd, AnswerConsultReleasingCareUnit.xsd, CancelSuspendFineYear.xsd, ConsultAffiliationView.xsd, ConsultCareerView.xsd, ConsultContributionObligationView.xsd, ConsultContributionView.xsd, ConsultExemptionView.xsd, ConsultFineView.xsd, ConsultInvestigationView.xsd, ConsultMutationView.xsd, ConsultSSINView.xsd, ConsultSanctionMeasuresView.xsd, ConsultSuspensionFineYearView.xsd, ConsultSuspensionView.xsd, ConsultWaitingPeriodView.xsd, Exemption.xsd, PushErrorFile.xsd, Common.xsd (ConsultAffiliabilityViewResponse)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Error" type="ErrorType" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Groeperend element voor de informatie betreffende één fout.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ErrorType">
+		<xs:annotation>
+			<xs:documentation>Groeperend element voor de informatie betreffende één fout.</xs:documentation>
+			<xs:documentation>used: Common.xsd (Errors)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Het type fout</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Field" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bevat de naam van het element uit de Request-boodschap waar de fout zich heeft voorgedaan.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="KeyValuePair" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Generiek element om extra informatie over bepaalde errors mee te geven.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Key" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Aanduiding voor bepaalde informatie </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Value" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Specifieke waarde voor deze informatie</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Translation" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>De beschrijving van de fout in woorden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FirstNotification" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Aanduiding of deze fout reeds eerder gemeld werd.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExemptionObligationType">
+		<xs:annotation>
+			<xs:documentation>used: ConsultContributionObligationView.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Year" type="year"/>
+			<xs:element name="Reason" type="xs:string" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ExemptionReasonType">
+		<xs:annotation>
+			<xs:documentation>mogelijke waarden voor RedenVrijstelling</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>Particulier verzekerden</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>EG ambtenaar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation>Eurocontrol</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation>NAVO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="7">
+				<xs:annotation>
+					<xs:documentation>Personeelsleden internationale instellingen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="10">
+				<xs:annotation>
+					<xs:documentation>Mutualistisch grensarbeider</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="11">
+				<xs:annotation>
+					<xs:documentation>KSZ</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="18">
+				<xs:annotation>
+					<xs:documentation>Belgische Militairen EER</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="19">
+				<xs:annotation>
+					<xs:documentation>Andere vrijgestelden</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="23">
+				<xs:annotation>
+					<xs:documentation>student</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="24">
+				<xs:annotation>
+					<xs:documentation>Ambassadepersoneel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="25">
+				<xs:annotation>
+					<xs:documentation>Niet van toepassing</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="26">
+				<xs:annotation>
+					<xs:documentation>Max 5 jaar bijdragen </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="27">
+				<xs:annotation>
+					<xs:documentation>EU-student</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="28">
+				<xs:annotation>
+					<xs:documentation>Niet EU-student</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="29">
+				<xs:annotation>
+					<xs:documentation>Overgangsmaatregel THAB</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="30">
+				<xs:annotation>
+					<xs:documentation>wordt restrictief aansluitbaar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="31">
+				<xs:annotation>
+					<xs:documentation>behartenswaardig</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="50">
+				<xs:annotation>
+					<xs:documentation>CSR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="51">
+				<xs:annotation>
+					<xs:documentation>Persoonlijk faillissement</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="52">
+				<xs:annotation>
+					<xs:documentation>VT</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="54">
+				<xs:annotation>
+					<xs:documentation>OpheffingSanctie</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="55">
+				<xs:annotation>
+					<xs:documentation>Niet bijdrageplichtig voor jaar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="101">
+				<xs:annotation>
+					<xs:documentation>dummy-vrijstelling voor register 1</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="102">
+				<xs:annotation>
+					<xs:documentation>dummy-vrijstelling voor register 2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="103">
+				<xs:annotation>
+					<xs:documentation>Wachtregister voor register 3</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="104">
+				<xs:annotation>
+					<xs:documentation>Wachtregister voor register 4</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="105">
+				<xs:annotation>
+					<xs:documentation>Wachtregister voor register 5</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="106">
+				<xs:annotation>
+					<xs:documentation>dummy-vrijstelling voor register 6</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="108">
+				<xs:annotation>
+					<xs:documentation>Wachtregister voor register 8</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="109">
+				<xs:annotation>
+					<xs:documentation>Wachtregister voor register 9</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="110">
+				<xs:annotation>
+					<xs:documentation>Wachtregister voor register 10</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="111">
+				<xs:annotation>
+					<xs:documentation>Wachtregister voor register 11</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="FineType">
+		<xs:annotation>
+			<xs:documentation>used: ConsultFineView.xsd, ConsultSanctionMeasuresView.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Status" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Status van de boete.</p>
+						<p>Type: FineStatusType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateImposition" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Dit beeld geeft enkel boetes die opgelegd zijn: ze hebben dus allemaal een DatumOplegging. Dit is niet hetzelfde als DatumBoetebrief, wat het moment is waarop het ZF de boetebrief naar de persoon verstuurd heeft.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateFineLetter" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Dit beeld kan ook boetes bevatten die reeds opgelegd zijn, maar waarvoor de boetebrief nog niet verstuurd is en er bijgevolg nog geen DatumBoetebrief is.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentPlan" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Geeft aan dat er een afbetalingsplan is, dat er geen is of dat het opgeheven is.</p>
+						<p>Type: PaymentPlanType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AmountPayable" type="amount"/>
+			<xs:element name="ReasonReduction" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Element zal enkel aanwezig zijn als VT == 'ja' voor het jaargegeven van het jaar van DatumOplegging. Indien aanwezig moet het de waarde 'VT' krijgen.</p>
+						<p>Type: ReasonReductionType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AmountPaid" type="amount"/>
+			<xs:element name="DatePaid" type="xs:date" minOccurs="0"/>
+			<xs:element name="FinableYear" type="year" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						<p>De kalenderjaren waarop de boete betrekking heeft (minimum 3). Extra info betreffende deze jaren kan via het bijdragenbeeld opgevraagd worden.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegisteredLetter" type="RegisteredLetterViewType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Groeperend element voor de aangetekende brief die verstuurd werd door de zorgkas betreffende deze boete.</p>
+						<p>In bepaalde gevallen kunnen er meerdere aangetekende brieven verbonden zijn met een boete. In dit geval wordt enkel de recentste (op basis van DateSent) aangetekende brief opgenomen in het beeld.</p>
+						<p>Bij boetes met DatumOplegging &lt;2001 kan de aangetekende brief afwezig zijn.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ICType">
+		<xs:annotation>
+			<xs:documentation>mogelijke waarden voor VT</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>onbekend</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>nee</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>ja</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="InitiatingActionType">
+		<xs:annotation>
+			<xs:documentation>Groeperend element voor informatie over de initiërende actie.</xs:documentation>
+			<xs:documentation>used: ConsultInvestigationView.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ActionType">
+				<xs:sequence>
+					<xs:element name="ReceptionTime" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Tijdstip waarop de initiërende actie ontvangen is.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PartyIdentification" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								<p>Een zorgkascode of de code voor het Vlaams Zorgfonds.</p>
+								<p>Type: CareEntityCodeType</p>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="InscriptionType">
+		<xs:sequence>
+			<xs:element name="QualityCode" type="xs:nonNegativeInteger">
+				<xs:annotation>
+					<xs:documentation>Hoedanigheidscode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ForceInscription" type="xs:boolean" default="false" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvestigationType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>used: ConsultInvestigationView.xsd, PushViews.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SSIN" type="SSINType"/>
+			<xs:element name="InvestigationId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Uniek nummer dat het probleem (automatisch onderzoek of melding) identificeert.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvestigationName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Naam van het probleem</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvestigationTypeId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Type van het probleem</p>
+						<p>Type: ProblemTypeType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvestigationStatus" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Status van het  probleem</p>
+						<p>Enkel aanwezig voor automatische onderzoeken. Meldingen hebben geen status.</p>
+						<p>Type: ProblemStatusType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreationTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Tijdstip van creatie van het probleem (&gt;2011)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LastModificationTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tijdstip van de laatste wijziging van het probleem (&gt;2011)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Argument" type="KeyValueType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Argument gebruikt in het  probleem</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExtraInfo" type="KeyValueType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Generiek element om extra informatie over onderzoeken mee te geven.</p>
+						<p>Enkel aanwezig bij automatische open onderzoeken.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvolvedPartyType">
+		<xs:annotation>
+			<xs:documentation>used: ConsultInvestigationView.xsd, Common.xsd (SolutionType)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Involvement">
+				<xs:annotation>
+					<xs:documentation>Geeft de rol aan die gespeeld word door de meegegeven organizatie (ZF of ZK).</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="initiating party"/>
+						<xs:enumeration value="care fund"/>
+						<xs:enumeration value="assigned care unit"/>
+						<xs:enumeration value="releasing care unit"/>
+						<xs:enumeration value="new care unit"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PartyIdentification" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Een zorgkascode of de code voor het Vlaams Zorgfonds.</p>
+						<p>Type: CareEntityCodeType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="KeyValueType">
+		<xs:annotation>
+			<xs:documentation>
+				<p>Groeperend element voor een KeyValuePair.</p>
+				<p>Dit element wordt gebruikt in: <ul>
+						<li>GS18.Errors om aan te duiden waarop de error betrekking heeft: Key=GS14Type Value=[AffiliationWithId, Affiliation, Termination, AffiliationWithTerminiation]</li>
+						<li>GS18.Affiliation.Errors indien error kan toegewezen worden aan een specifiek bijdragejaar: Key=Contribution.Year Value=jaartal</li>
+						<li>GS32 beeld onderzoek om extra info en/of argumenten mee te geven (zie hiervoor document met overzicht acties).</li>
+						<li>GS47.Errors (als antwoord op GS26) indien error kan toegewezen worden aan een specifiek bijdragejaar: Key=Contribution.Year Value=jaartal</li>
+					</ul>
+				</p>
+			</xs:documentation>
+			<xs:documentation>used: InvestigationType</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Key" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Aanduiding voor bepaalde informatie </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Specifieke waarde voor deze informatie</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="MunicipalityNIScode">
+		<xs:annotation>
+			<xs:documentation>integer (five position) identifying a municipality</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:maxInclusive value="99999"/>
+			<xs:minInclusive value="0"/>
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="MutationDossier">
+		<xs:annotation>
+			<xs:documentation>used: InformMutationAnswer.xsd, ReportMutationAnswer.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SSIN" type="SSINType"/>
+			<xs:element name="Year" type="year">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Mutatiejaar</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AnswerReasonCode" type="xs:string"/>
+			<xs:element name="ReleasingCareUnit" type="xs:string"/>
+			<xs:element name="NewCareUnit" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MutationNotificationType">
+		<xs:annotation>
+			<xs:documentation>used: InformMutationNotification.xsd, ReportMutationNotification.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SSIN" type="SSINType"/>
+			<xs:element name="Year" type="year">
+				<xs:annotation>
+					<xs:documentation>
+						<p>mutatiejaar </p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="xs:string"/>
+			<xs:element name="InitiatedBy" type="xs:string"/>
+			<xs:element name="NewCareUnit" type="xs:string"/>
+			<xs:element name="ReleasingCareUnit" type="xs:string"/>
+			<xs:element name="FormDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PeriodWithStartYear">
+		<xs:annotation>
+			<xs:documentation>used: ConsultCareerView.xsd, Common.xsd (ConsultAffiliabilityViewResponse)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StartYear" type="year"/>
+			<xs:element name="EndYear" type="year" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="PlaceOfEmploymentType">
+		<xs:annotation>
+			<xs:documentation>mogelijke waarden voor PlaatsVanTewerkstelling</xs:documentation>
+			<xs:documentation>used: Common.xsd (YearDataDetailType)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>Vlaanderen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>Brussel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RecruitabilityType">
+		<xs:annotation>
+			<xs:documentation>mogelijke waarden voor Werfbaarheid</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>actief</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>passief</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>niet</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>restrictief</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RegionType">
+		<xs:annotation>
+			<xs:documentation>mogelijke waarden voor Regio</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>elders</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>Vlaanderen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>Brussel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>Wallonië</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RegisteredLetterAddress">
+		<xs:annotation>
+			<xs:documentation>used: Common.xsd (AbstractRegisteredLetterType)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StreetName" type="xs:string"/>
+			<xs:element name="HouseNumber" type="xs:string"/>
+			<xs:element name="Box" type="xs:string" minOccurs="0"/>
+			<xs:element name="ZIPCode" type="xs:string"/>
+			<xs:element name="CityName" type="xs:string"/>
+			<xs:element name="Country" type="countryNisCode"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RegisteredLetterType">
+		<xs:annotation>
+			<xs:documentation>used: RegisteredMailAVZ.xsd, ReportRegisteredMail.xsd)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AbstractRegisteredLetterType">
+				<xs:sequence>
+					<xs:element name="ContributionYear" type="year" minOccurs="3" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RegisteredLetterViewType">
+		<xs:annotation>
+			<xs:documentation>used: Common.xsd (FineType)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AbstractRegisteredLetterType">
+				<xs:sequence>
+					<xs:element name="ContributionYear" type="year" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ResolvingActionType">
+		<xs:annotation>
+			<xs:documentation>used: Common.xsd (SolutionType)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ActionType">
+				<xs:sequence>
+					<xs:element name="Process" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>
+								<p>Indicatie of de oplossende actie al dan niet uitgevoerd moet worden als de oplossing compleet is.</p>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ActionStatus" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								<p>Status van de actie </p>
+								<p>Type: ActionStatusType</p>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LastModificationTime" type="xs:dateTime" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Tijdstip waarop de actie laatst werd gewijzigd.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PartyIdentification" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>
+								<p>Een zorgkascode of de code voor het Vlaams Zorgfonds.</p>
+								<p>Enkel aanwezig indien de actie ontvangen werd </p>
+								<p>Type: CareEntityCodeType</p>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RetryResponse">
+		<xs:annotation>
+			<xs:documentation>used: AffiliationOrTerminationApplication.xsd, AnswerAffiliationOrTerminationApplication.xsd, AnswerConsultAffiliabilityViewBulk.xsd, AnswerConsultReleasingCareUnit.xsd,  ConsultAffiliabilityViewBulk.xsd, ConsultReleasingCareUnit.xsd, CreateFines.xsd,  DF90_ManageDossier.xsd, DF91_RecalculateYeardataOnDemand.xsd, DF92_CloseInvestigationOnDemand.xsd, DF93_ManageAddress.xsd, FileNR.xsd, InformMutationAnswer.xsd, InformMutationNotification.xsd, PushDossiersUnmentioned.xsd, PushErrorFile.xsd, PushPossibleFinees.xsd, PushViews.xsd, RegisteredMailAVZ.xsd, ReportMutationAnswer.xsd, ReportMutationNotification.xsd, ReportRegisteredMail.xsd, SendDossier.xsd, UpdateFine.xsd, YearlyContribution.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Retry" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Geeft aan of het bericht opnieuw gestuurd moet worden indien er een probleem was bij de ontvanger.</p>
+						<p>Type: Boolean</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SolutionType">
+		<xs:annotation>
+			<xs:documentation>used: ConsultInvestigationView.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SolutionId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Uniek nummer dat de oplossing identificeert.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SolutionName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Naam van de oplossing.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SolutionTypeId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Uniek id dat het type van de oplossing identificeert. </p>
+						<p>Type: SolutionTypeType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SolutionStatus" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Status van de oplossing </p>
+						<p>Type: SolutionStatusType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreationTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Tijdstip waarop de oplossing werd aangemaakt.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LastModificationTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tijdstip waarop de oplossing laatst werd gewijzigd.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Action" type="ResolvingActionType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Groeperend element voor een actie van een oplossing. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvolvedParties" type="InvolvedPartyType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Groeperend element voor de betrokken partijen van het probleem.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SSINType">
+		<xs:annotation>
+			<xs:documentation>used: almost everywhere</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="11"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="SuspensionType">
+		<xs:annotation>
+			<xs:documentation>used: ConsultSanctionMeasuresView.xsd, ConsultSuspensionView.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Region" type="RegionType">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Regio</p>
+						<p>De opschortingen moeten per regio opgeteld worden. De waarde Wallonië en elders zou hierbij niet mogen doorkomen.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalSuspension" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>De duur van de opschorting wordt uitgedrukt in maanden. Deze waarde is de som van al de opschortingen (met status verschillend van 'opgeheven') die een persoon tijdens zijn loopbaan heeft opgelopen terwijl hij woonachtig of tewerkgesteld (i.g.v. inkomende grensarbeider)  was in de regio.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RemainingSuspension" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>De duur van de resterende opschorting, opgelopen terwijl hij woonachtig of tewerkgesteld (i.g.v. inkomende grensarbeider)  was in de regio, wordt uitgedrukt in maanden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Year" type="year" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>De bijdragejaren die aanleiding gegeven hebben tot een opschorting. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="TerminationCodeType">
+		<xs:annotation>
+			<xs:documentation>v2.0.1: added code 9880</xs:documentation>
+			<xs:documentation>v2.0.0: defined termination code type</xs:documentation>
+			<xs:documentation>used: AffiliationOrTerminationApplication.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1010">
+				<xs:annotation>
+					<xs:documentation>overlijden</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1020">
+				<xs:annotation>
+					<xs:documentation>einde tegemoetkoming (jonger dan 26 jaar)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1030">
+				<xs:annotation>
+					<xs:documentation>verlaten van Vlaanderen of Brussel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1050">
+				<xs:annotation>
+					<xs:documentation>vrijwillige stopzetting in Brussel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1052">
+				<xs:annotation>
+					<xs:documentation>vrijwillige stopzetting in Vlaanderen voor persoon met een verdragsvrijstelling (b.v. Uitgaande Grensarbeider)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1060">
+				<xs:annotation>
+					<xs:documentation>
+						<p>schrapping van dubbele aansluiting</p>
+						<p>deze afsluitcode is enkel geldig indien afsluitjaar &lt; 2012</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1071">
+				<xs:annotation>
+					<xs:documentation>mutatie naar CM-zorgkas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1072">
+				<xs:annotation>
+					<xs:documentation>mutatie naar Neutrale Zorgkas Vlaanderen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1073">
+				<xs:annotation>
+					<xs:documentation>mutatie naar Zorgkas van de Socialistische Mutualiteiten</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1074">
+				<xs:annotation>
+					<xs:documentation>mutatie naar Zorgkas van de Liberale Ziekenfondsen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1075">
+				<xs:annotation>
+					<xs:documentation>mutatie naar Zorgkas van de Onafhankelijke Ziekenfondsen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1076">
+				<xs:annotation>
+					<xs:documentation>mutatie naar Vlaamse Zorgkas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1077">
+				<xs:annotation>
+					<xs:documentation>mutatie naar Ethias Zorgkas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1078">
+				<xs:annotation>
+					<xs:documentation>mutatie naar Zorgkas DKV Belgium</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1080">
+				<xs:annotation>
+					<xs:documentation>
+						<p>overige</p>
+						<p>deze afsluitcode is enkel geldig indien afsluitjaar &lt; 2012</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1085">
+				<xs:annotation>
+					<xs:documentation>
+						<p>einde aansluiting door beëindiging van statuut van inkomende grensarbeider of door vrijstelling van betrokkene</p>
+						<p>deze afsluitcode is enkel geldig indien afsluitjaar &lt; 2012</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1086">
+				<xs:annotation>
+					<xs:documentation>einde aansluiting door beëindiging van statuut van inkomende grensarbeider</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1087">
+				<xs:annotation>
+					<xs:documentation>einde aansluiting door vrijstelling van betrokkene</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1090">
+				<xs:annotation>
+					<xs:documentation>onbekend</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1091">
+				<xs:annotation>
+					<xs:documentation>einde administratieve aansluiting</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="9999">
+				<xs:annotation>
+					<xs:documentation>annulatie aansluiting</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="9880">
+				<xs:annotation>
+					<xs:documentation>
+						<p>einde aansluiting wegens stopzetting DKV-zorgkas</p>
+						<p>Deze afsluitcode kan NIET gebruikt worden in GS14 Aan- of afsluitingsaanvraag. Ze kan enkel voorkomen in GS24 Beeld aansluiting</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="TimePeriod">
+		<xs:annotation>
+			<xs:documentation>
+				<p>Bepaalde beelden kunnen opgevraagd worden voor een bepaalde tijdsperiode.</p>
+				<p>Als er enkel een startjaar wordt gegeven, dan zal de tijdsperiode lopen tot op het huidige jaar.</p>
+				<p>Wordt er enkel een eindjaar opgegeven, dan zal de tijdsperiode beginnen op 2001 (start zorgverzekering) .</p>
+				<p>Wordt er geen van beide opgegeven, dan zal de tijdsperiode lopen vanaf 2001 tot op het huidige jaar.</p>
+			</xs:documentation>
+			<xs:documentation>used: Common.xsd (ConsultViewWithTimePeriodRequest), ConsultAffiliationView.xsd, ConsultContributionObligationView.xsd, ConsultContributionView.xsd, ConsultExemptionView.xsd, ConsultFineView.xsd, ConsultMutationView.xsd, ConsultSuspensionFineYearView.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StartYear" type="year" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Startjaar van de periode die men opvraagt (&gt;=2001)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndYear" type="year" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindjaar van de periode die men opvraagt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WaitingPeriodType">
+		<xs:annotation>
+			<xs:documentation>Groeperend element voor de informatie betreffende de wachttijd van het gevraagde dossier.</xs:documentation>
+			<xs:documentation>used: ConsultSanctionMeasuresView.xsd, ConsultWaitingPeriodView.xsd, PushViews.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NumberOfYears" type="xs:short">
+				<xs:annotation>
+					<xs:documentation>
+						<p>De wachttijd wordt uitgedrukt in jaren. Bij een persoon die geen wachttijd (meer) heeft, zal dit veld 0 zijn. De maximale wachttijd wordt aanggeven met de parameter par_WachttijdMaxAantalJaren. Tot en met 2016 was dit 10j. Vanaf 2017 is dit 5j.</p>
+						<p>Berekening:
+							<ul>
+								<li>als voor het huidige jaar JAARGEGEVEN.Aansluitplicht == "vrijwillig" , dan is NumberOfYears = par_WachttijdMaxAantalJaren – (huidige jaar – DOSSIER.WachttijdStartJaar)</li>
+								<li>anders (JAARGEGEVEN.Aansluitplicht != "vrijwillig" voor het huidige jaar) is NumberOfYerars=0 	</li>
+							</ul>
+						</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartYear" type="year" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Startjaar wachttijd</p>
+						<p>Enkel aanwezig indien NumberOfYears verschilt van 0.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Warnings">
+		<xs:annotation>
+			<xs:documentation>Groeperend element voor alle warnings.</xs:documentation>
+			<xs:documentation>used: AnswerAffiliationOrTerminationApplication.xsd, AnswerConsultReleasingCareUnit.xsd, CancelSuspendFineYear.xsd, ConsultAffiliationView.xsd, ConsultCareerView.xsd, ConsultContributionObligationView.xsd, ConsultContributionView.xsd, ConsultExemptionView.xsd, ConsultFineView.xsd, ConsultInvestigationView.xsd, ConsultMutationView.xsd, ConsultSSINView.xsd, ConsultSanctionMeasuresView.xsd, ConsultSuspensionFineYearView.xsd, ConsultSuspensionView.xsd, ConsultWaitingPeriodView.xsd, Exemption.xsd, PushErrorFile.xsd, Common.xsd (ConsultAffiliabilityViewResponse)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Warning" type="WarningType" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Groeperend element voor de informatie betreffende één warning.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="WarningType">
+		<xs:annotation>
+			<xs:documentation>Groeperend element voor de informatie betreffende één warning.</xs:documentation>
+			<xs:documentation>used: Common.xsd (Warnings)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Het type warning</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Field" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bevat de naam van het element uit de Request-boodschap waar de fout zich heeft voorgedaan.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="KeyValuePair" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Generiek element om extra informatie over bepaalde errors mee te geven.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Key" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Aanduiding voor bepaalde informatie </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Value" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Specifieke waarde voor deze informatie</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Translation" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Aanduiding of deze fout reeds eerder gemeld werd.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="year">
+		<xs:annotation>
+			<xs:documentation>used: AffiliationOrTerminationApplication.xsd, CancelSuspendFineYear.xsd, ConsultContributionObligationView.xsd, ConsultMutationView.xsd, ConsultSuspensionFineYearView.xsd, DF90_ManageDossier.xsd, DF91_RecalculateYeardataOnDemand.xsd, PushDossiersUnmentioned.xsd, SendDossier.xsd, UpdateFine.xsd, Common.xsd (...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:short">
+			<xs:minInclusive value="1000"/>
+			<xs:maxInclusive value="9999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="YearDataDetailType">
+		<xs:annotation>
+			<xs:documentation>used: Common.xsd (YearDataType)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StatusYear" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Statusjaar</p>
+						<p>Type: StatusType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContributionsOverdueStatus" type="ContributionsOverdueStatusType">
+				<xs:annotation>
+					<xs:documentation>
+						<p>De betaalstatus geeft weer of er nog achterstallige premies zijn bij hetzij de ZK hetzij AVSB.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CareUnitCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>De zorgkascode van de ZK waar het dossier voor dat jaar aangesloten was. Als er geen aansluiting is (b.v. bij aansluitplicht == 'verboden') voor een jaar, zal dit element niet aanwezig zijn.</p>
+						<p>Type: CareUnitCodeType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IC" type="ICType">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Verhoogde tegemoetkoming </p>
+						<p>Type: ICType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContributionDue" type="amount">
+				<xs:annotation>
+					<xs:documentation>
+						<p>De te betalen bijdrage. Dit bedrag wordt niet aangepast als een lid zijn bijdrage heeft betaald! </p>
+						<p>Als een dossier niet bijdrageplichtig is zal de VerschuldigdeBijdrage de waarde 0 hebben.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AmountPaid" type="amount">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Betaald bedrag</p>
+						<p>Indien dit veld in de databank nog niet ingevuld is, zal hier de waarde '0' worden meegegeven.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DatePaid" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Betaaldatum. </p>
+						<p>Dit element is niet aanwezig indien AmountPaid=0.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DueDateSuspension" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Uiterste betalingsdatum alvorens het lid een opschorting oploopt.</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StatusFineYear" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<p>De status van het boetejaar.</p>
+						<p>Type: StatusFineYearType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CollectionManager" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Inningsverantwoordelijke </p>
+						<p>Type: CollectionManagerType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Collector" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Ontvanger </p>
+						<p>Type: CareEntityCodeType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PlaceOfEmployment" type="PlaceOfEmploymentType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<p>Plaats van tewerkstelling gebruikt in het jaargegeven.</p>
+						<p>Type: PlaceOfEmploymentType</p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AffiliationObligation" type="AffiliationObligationType">
+				<xs:annotation>
+					<xs:documentation>
+						<p> De aansluitbaarheid of aansluitplicht voor het betreffende jaar. </p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="YearDataType">
+		<xs:annotation>
+			<xs:documentation>used: ConsultContributionView.xsd, CreateFines.xsd, PushPossibleFinees.xsd, SendDossier.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Year" type="year">
+				<xs:annotation>
+					<xs:documentation>Het jaar waarvoor de informatie wordt weergegeven.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Detail" type="YearDataDetailType">
+				<xs:annotation>
+					<xs:documentation>Bevat detailinformatie over de bijdragen voor een jaar.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="YearType">
+		<xs:annotation>
+			<xs:documentation>used: AffiliationOrTerminationApplication.xsd</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:short">
+			<xs:minInclusive value="2001"/>
+			<xs:maxInclusive value="9999"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

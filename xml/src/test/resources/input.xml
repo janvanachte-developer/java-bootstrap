@@ -1,0 +1,14 @@
+<ord:header xmlns:ord="http://example.org/ord">
+    <identifier>string</identifier>
+    <status>STATUS3</status>
+    <items>
+        <!--Zero or more repetitions:-->
+        <item>
+            <identifier>string</identifier>
+            <status>STATUS1</status>
+        </item>
+        <item>
+            <identifier>string</identifier>
+            <status>STATUS1</status>
+        </item>  </items>
+</ord:header>

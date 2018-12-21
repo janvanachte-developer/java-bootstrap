@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customer id="123">
+    <name>Jane Doe</name>
+    <billingAddress>
+        <street>1 A Street</street>
+        <city>Any Town</city>
+        <province>Ontario</province>
+        <postalCode>A1B 2C3</postalCode>
+    </billingAddress>
+    <shippingAddress>
+        <street>2 B Road</street>
+        <city>Another Place</city>
+        <province>Quebec</province>
+        <postalCode>X7Y 8Z9</postalCode>
+    </shippingAddress>
+    <phoneNumbers>
+        <phoneNumber type="work">555-1111</phoneNumber>
+        <phoneNumber type="home">555-2222</phoneNumber>
+    </phoneNumbers>
+</customer>

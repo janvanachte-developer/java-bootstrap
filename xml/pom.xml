@@ -11,7 +11,76 @@
 
     <artifactId>xml</artifactId>
 
+    <profiles>
+        <profile>
+            <id>benchmark</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jvnet.jaxb2.maven2</groupId>
+                            <artifactId>maven-jaxb2-plugin</artifactId>
+                        <version>0.14.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <schemaDirectory>${basedir}/src/test/resources</schemaDirectory>
+                            <schemaIncludes>
+                                <include>*.xsd</include>
+                            </schemaIncludes>
+                            <extension>true</extension>
+                            <!--<args>-->
+                                <!--<arg>-enableIntrospection</arg>-->
+                                <!--<arg>-XtoString</arg>-->
+                                <!--<arg>-Xequals</arg>-->
+                                <!--<arg>-XhashCode</arg>-->
+                            <!--</args>-->
+                            <removeOldOutput>true</removeOldOutput>
+                            <verbose>true</verbose>
+                            <plugins>
+                                <plugin>
+                                    <groupId>org.jvnet.jaxb2_commons</groupId>
+                                    <artifactId>jaxb2-basics</artifactId>
+                                    <version>0.6.1</version>
+                                </plugin>
+                            </plugins>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+    </profiles>
+
     <dependencies>
+
+        <dependency>
+            <groupId>jan.vanachte</groupId>
+            <artifactId>log</artifactId>
+        </dependency>
+
+        <!-- bindings -->
+        <!--<dependency>-->
+            <!--<groupId>com.sun.xml.bind</groupId>-->
+            <!--<artifactId>jaxb-impl</artifactId>-->
+            <!--<version>2.1.3</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics-runtime</artifactId>
+            <version>1.11.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.woodstox</groupId>
+            <artifactId>stax2-api</artifactId>
+            <version>4.1</version>
+        </dependency>
+
+        <!-- dynamic jaxb -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
@@ -28,6 +97,18 @@
             <version>2.2.11</version>
         </dependency>
 
+        <dependency>
+            <groupId>uk.co.jemos.podam</groupId>
+            <artifactId>podam</artifactId>
+            <version>7.2.1.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.0.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 

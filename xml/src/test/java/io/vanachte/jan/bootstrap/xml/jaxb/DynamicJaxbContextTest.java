@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import javax.xml.bind.*;
@@ -18,7 +17,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.eclipse.persistence.dynamic.DynamicEntity;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 public class DynamicJaxbContextTest {
 

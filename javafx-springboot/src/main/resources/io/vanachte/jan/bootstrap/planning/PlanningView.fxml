@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.vanachte.jan.bootstrap.planning.PlanningJavaFxController">
+   <children>
+      <SplitPane>
+        <items>
+          <AnchorPane>
+              <children>
+                  <SplitPane orientation="VERTICAL">
+                    <items>
+                      <AnchorPane>
+                         <children>
+                             <fx:include source="../person/PersonView.fxml" />
+                         </children>
+                      </AnchorPane>
+                      <AnchorPane>
+                         <children>
+                             <fx:include source="../task/TaskView.fxml" />
+                         </children>
+                      </AnchorPane>
+                    </items>
+                  </SplitPane>
+              </children>
+
+          </AnchorPane>
+          <AnchorPane />
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.vanachte.jan.bootstrap.ApplicationController">
+   <children>
+      <TabPane tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Planning">
+            <content>
+              <AnchorPane>
+                  <children>
+                      <fx:include source="planning/PlanningView.fxml" />
+                  </children>
+              </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Human Resources">
+            <content>
+              <AnchorPane/>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

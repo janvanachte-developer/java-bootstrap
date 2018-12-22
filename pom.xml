@@ -15,6 +15,7 @@
         <module>domain</module>
         <module>log</module>
         <module>javafx-springboot</module>
+        <module>domain-jaxb</module>
     </modules>
 
     <parent>
@@ -99,6 +100,12 @@
                 <artifactId>domain</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>jan.vanachte</groupId>
+                <artifactId>domain-jaxb</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
             <dependency>
                 <groupId>jan.vanachte</groupId>
                 <artifactId>log</artifactId>

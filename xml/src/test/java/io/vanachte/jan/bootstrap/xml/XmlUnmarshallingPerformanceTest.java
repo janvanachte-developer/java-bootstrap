@@ -1,14 +1,14 @@
 package io.vanachte.jan.bootstrap.xml;
 
+import io.vanachte.jan.bootstrap.person.ObjectFactory;
+import io.vanachte.jan.bootstrap.person.PersonType;
+import io.vanachte.jan.bootstrap.person.PersonsType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.stax2.XMLInputFactory2;
 import org.junit.jupiter.api.Test;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
-import xml.integration.jemos.co.uk.large_file.ObjectFactory;
-import xml.integration.jemos.co.uk.large_file.PersonType;
-import xml.integration.jemos.co.uk.large_file.PersonsType;
 
 import javax.xml.bind.*;
 import javax.xml.stream.*;
@@ -18,35 +18,30 @@ import java.util.List;
 @Slf4j
 public class XmlUnmarshallingPerformanceTest {
 
-    private static final String OUTPUT_FOLDER = System.getProperty("user.home")
-            + File.separatorChar + "xml-benchmark";
+    private static final String OUTPUT_FOLDER = "/tmp" + File.separatorChar + "xml-benchmark";
 
     @Test
     public void compare_jaxb_stax_woodstox() {
 
         try {
-
-            File outputDir = new File(OUTPUT_FOLDER);
-            if (!outputDir.exists()) {
+            File outputFolder = new File(OUTPUT_FOLDER);
+            if (!outputFolder.exists()) {
                 log.info("Creating output folder: "
-                        + outputDir.getAbsolutePath());
-                boolean created = outputDir.mkdirs();
+                        + outputFolder.getAbsolutePath());
+                boolean created = outputFolder.mkdirs();
                 if (!created) {
                     throw new IllegalStateException("Could not create "
-                            + outputDir.getAbsolutePath() + ". Aborting...");
+                            + outputFolder.getAbsolutePath() + ". Aborting...");
                 }
             }
-            createXmlPortfolio();
-
+            createXmlTestFiles();
             System.gc();
             System.gc();
 
             for (int i = 0; i < 10; i++) {
 
-                readLargeFileWithJaxb(new File(OUTPUT_FOLDER
-                        + File.separatorChar + "large-person-10000.xml"), 10000);
-                readLargeFileWithJaxb(new File(OUTPUT_FOLDER
-                                + File.separatorChar + "large-person-100000.xml"),
+                readLargeFileWithJaxb(new File(OUTPUT_FOLDER + File.separatorChar + "large-person-10000.xml"), 10000);
+                readLargeFileWithJaxb(new File(OUTPUT_FOLDER + File.separatorChar + "large-person-100000.xml"),
                         100000);
                 readLargeFileWithJaxb(new File(OUTPUT_FOLDER
                                 + File.separatorChar + "large-person-1000000.xml"),
@@ -78,7 +73,7 @@ public class XmlUnmarshallingPerformanceTest {
 
     }
 
-    private void createXmlPortfolio() throws Exception {
+    private void createXmlTestFiles() throws Exception {
         createXml(10000, OUTPUT_FOLDER + File.separatorChar
                 + "large-person-10000.xml");
         log.info("Completed generation of large XML with 10,000 entries...");
@@ -92,44 +87,38 @@ public class XmlUnmarshallingPerformanceTest {
 
     private void createXml(int nbrElements, String fileName) throws Exception {
 
-        JAXBContext context = JAXBContext
-                .newInstance("xml.integration.jemos.co.uk.large_file");
-
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-
         PersonsType personsType = new ObjectFactory().createPersonsType();
         List<PersonType> persons = personsType.getPerson();
         PodamFactory factory = new PodamFactoryImpl();
+
         for (int i = 0; i < nbrElements; i++) {
             persons.add(factory.manufacturePojo(PersonType.class));
         }
 
-        JAXBElement<PersonsType> toWrite = new ObjectFactory()
-                .createPersons(personsType);
+        JAXBElement<PersonsType> toWrite = new ObjectFactory().createPersons(personsType);
 
         File file = new File(fileName);
-        BufferedOutputStream bos = new BufferedOutputStream(
-                new FileOutputStream(file), 4096);
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file), 4096);
 
         try {
-            marshaller.marshal(toWrite, bos);
-            bos.flush();
+            JAXBContext jaxbContext = JAXBContext.newInstance("io.vanachte.jan.bootstrap.person");
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            marshaller.marshal(toWrite, outputStream);
+            outputStream.flush();
         } finally {
-            IOUtils.closeQuietly(bos);
+            IOUtils.closeQuietly(outputStream);
         }
 
     }
 
-    private void readLargeFileWithJaxb(File file, int nbrRecords)
-            throws Exception {
+    private void readLargeFileWithJaxb(File file, int nbrRecords) throws Exception {
 
-        JAXBContext ucontext = JAXBContext
-                .newInstance("xml.integration.jemos.co.uk.large_file");
-        Unmarshaller unmarshaller = ucontext.createUnmarshaller();
+        JAXBContext jaxbContext = JAXBContext.newInstance("io.vanachte.jan.bootstrap.person");
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
+        BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(
                 file));
 
         long start = System.currentTimeMillis();
@@ -137,8 +126,7 @@ public class XmlUnmarshallingPerformanceTest {
         long memend = 0L;
 
         try {
-            JAXBElement<PersonsType> root = (JAXBElement<PersonsType>) unmarshaller
-                    .unmarshal(bis);
+            JAXBElement<PersonsType> root = (JAXBElement<PersonsType>) unmarshaller.unmarshal(inputStream);
 
             root.getValue().getPerson().size();
 
@@ -153,40 +141,34 @@ public class XmlUnmarshallingPerformanceTest {
                     + (end - start));
 
         } finally {
-            IOUtils.closeQuietly(bis);
+            IOUtils.closeQuietly(inputStream);
         }
 
     }
 
-    private void readLargeXmlWithStax(File file, int nbrRecords)
-            throws FactoryConfigurationError, XMLStreamException,
-            FileNotFoundException, JAXBException {
+    private void readLargeXmlWithStax(File file, int nbrRecords) throws FactoryConfigurationError, XMLStreamException, FileNotFoundException, JAXBException {
 
         // set up a StAX reader
-        XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        XMLStreamReader xmlr = xmlif
-                .createXMLStreamReader(new FileReader(file));
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(new FileReader(file));
 
-        JAXBContext ucontext = JAXBContext.newInstance(PersonType.class);
-
-        Unmarshaller unmarshaller = ucontext.createUnmarshaller();
+        JAXBContext jaxbContext = JAXBContext.newInstance(PersonType.class);
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
         long start = System.currentTimeMillis();
         long memstart = Runtime.getRuntime().freeMemory();
         long memend = 0L;
 
         try {
-            xmlr.nextTag();
-            xmlr.require(XMLStreamConstants.START_ELEMENT, null, "persons");
+            xmlStreamReader.nextTag();
+            xmlStreamReader.require(XMLStreamConstants.START_ELEMENT, null, "persons");
 
-            xmlr.nextTag();
-            while (xmlr.getEventType() == XMLStreamConstants.START_ELEMENT) {
+            xmlStreamReader.nextTag();
+            while (xmlStreamReader.getEventType() == XMLStreamConstants.START_ELEMENT) {
 
-                JAXBElement<PersonType> pt = unmarshaller.unmarshal(xmlr,
-                        PersonType.class);
-
-                if (xmlr.getEventType() == XMLStreamConstants.CHARACTERS) {
-                    xmlr.next();
+                JAXBElement<PersonType> personType = unmarshaller.unmarshal(xmlStreamReader, PersonType.class);
+                if (xmlStreamReader.getEventType() == XMLStreamConstants.CHARACTERS) {
+                    xmlStreamReader.next();
                 }
             }
 
@@ -201,40 +183,34 @@ public class XmlUnmarshallingPerformanceTest {
                     + (end - start));
 
         } finally {
-            xmlr.close();
+            xmlStreamReader.close();
         }
 
     }
 
-    private void readLargeXmlWithFasterStax(File file, int nbrRecords)
-            throws FactoryConfigurationError, XMLStreamException,
-            FileNotFoundException, JAXBException {
+    private void readLargeXmlWithFasterStax(File file, int nbrRecords) throws FactoryConfigurationError, XMLStreamException, FileNotFoundException, JAXBException {
 
         // set up a StAX reader
-        XMLInputFactory xmlif = XMLInputFactory2.newInstance();
-        XMLStreamReader xmlr = xmlif
-                .createXMLStreamReader(new FileReader(file));
+        XMLInputFactory xmlInputFactory = XMLInputFactory2.newInstance();
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(new FileReader(file));
 
-        JAXBContext ucontext = JAXBContext.newInstance(PersonType.class);
-
-        Unmarshaller unmarshaller = ucontext.createUnmarshaller();
+        JAXBContext jaxbContext = JAXBContext.newInstance(PersonType.class);
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
         long start = System.currentTimeMillis();
         long memstart = Runtime.getRuntime().freeMemory();
         long memend = 0L;
 
         try {
-            xmlr.nextTag();
-            xmlr.require(XMLStreamConstants.START_ELEMENT, null, "persons");
+            xmlStreamReader.nextTag();
+            xmlStreamReader.require(XMLStreamConstants.START_ELEMENT, null, "persons");
 
-            xmlr.nextTag();
-            while (xmlr.getEventType() == XMLStreamConstants.START_ELEMENT) {
+            xmlStreamReader.nextTag();
+            while (xmlStreamReader.getEventType() == XMLStreamConstants.START_ELEMENT) {
+                JAXBElement<PersonType> personType = unmarshaller.unmarshal(xmlStreamReader, PersonType.class);
 
-                JAXBElement<PersonType> pt = unmarshaller.unmarshal(xmlr,
-                        PersonType.class);
-
-                if (xmlr.getEventType() == XMLStreamConstants.CHARACTERS) {
-                    xmlr.next();
+                if (xmlStreamReader.getEventType() == XMLStreamConstants.CHARACTERS) {
+                    xmlStreamReader.next();
                 }
             }
 
@@ -249,7 +225,7 @@ public class XmlUnmarshallingPerformanceTest {
                     + (end - start));
 
         } finally {
-            xmlr.close();
+            xmlStreamReader.close();
         }
 
     }

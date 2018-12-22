@@ -1,0 +1,1 @@
+https://github.com/highsource/maven-jaxb2-plugin

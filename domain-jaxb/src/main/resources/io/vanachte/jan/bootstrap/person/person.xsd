@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://bootstrap.jan.vanachte.io/person" xmlns:tns="http://bootstrap.jan.vanachte.io/person" elementFormDefault="qualified">
+
+    <element name="persons" type="tns:PersonsType"/>
+    <complexType name="PersonsType">
+        <sequence>
+            <element name="person" type="tns:PersonType" maxOccurs="unbounded" minOccurs="1"></element>
+        </sequence>
+    </complexType>
+    <complexType name="PersonType">
+        <sequence>
+            <element name="identifier" type="string"></element>
+            <element name="firstName" type="string"></element>
+            <element name="lastName" type="string"></element>
+        </sequence>
+    </complexType>
+</schema>

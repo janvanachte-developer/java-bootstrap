@@ -16,6 +16,8 @@
         <module>log</module>
         <module>javafx-springboot</module>
         <module>domain-jaxb</module>
+        <module>soap-springboot</module>
+        <module>domain-mapper</module>
     </modules>
 
     <parent>
@@ -36,38 +38,38 @@
     </properties>
 
     <!--<build>-->
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.jvnet.jaxb2.maven2</groupId>-->
-                <!--<artifactId>maven-jaxb2-plugin</artifactId>-->
-                <!--<version>0.14.0</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>tbd</id>-->
-                        <!--<phase>generate-sources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>generate</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<verbose>true</verbose>-->
-                            <!--<schemaDirectory>${basedir}/src/main/java</schemaDirectory>-->
-                            <!--<schemaIncludes>-->
-                                <!--<include>io/vanachte/jan/bootstrap/xml/jaxb/AffiliationOrTerminationApplication.xsd</include>-->
-                                <!--<include>io/vanachte/jan/bootstrap/xml/jaxb/Common.xsd</include>-->
-                            <!--</schemaIncludes>-->
-                            <!--<bindingIncludes>-->
-                                <!--<include>bindings/*.xjb</include>-->
-                            <!--</bindingIncludes>-->
-                            <!--<extension>true</extension>-->
-                            <!--<generateDirectory>${basedir}/target/generated-sources</generateDirectory>-->
-                            <!--<args>-->
-                                <!--<arg>-no-header</arg>-->
-                            <!--</args>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<groupId>org.jvnet.jaxb2.maven2</groupId>-->
+    <!--<artifactId>maven-jaxb2-plugin</artifactId>-->
+    <!--<version>0.14.0</version>-->
+    <!--<executions>-->
+    <!--<execution>-->
+    <!--<id>tbd</id>-->
+    <!--<phase>generate-sources</phase>-->
+    <!--<goals>-->
+    <!--<goal>generate</goal>-->
+    <!--</goals>-->
+    <!--<configuration>-->
+    <!--<verbose>true</verbose>-->
+    <!--<schemaDirectory>${basedir}/src/main/java</schemaDirectory>-->
+    <!--<schemaIncludes>-->
+    <!--<include>io/vanachte/jan/bootstrap/xml/jaxb/AffiliationOrTerminationApplication.xsd</include>-->
+    <!--<include>io/vanachte/jan/bootstrap/xml/jaxb/Common.xsd</include>-->
+    <!--</schemaIncludes>-->
+    <!--<bindingIncludes>-->
+    <!--<include>bindings/*.xjb</include>-->
+    <!--</bindingIncludes>-->
+    <!--<extension>true</extension>-->
+    <!--<generateDirectory>${basedir}/target/generated-sources</generateDirectory>-->
+    <!--<args>-->
+    <!--<arg>-no-header</arg>-->
+    <!--</args>-->
+    <!--</configuration>-->
+    <!--</execution>-->
+    <!--</executions>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
     <!--</build>-->
 
     <dependencies>
@@ -85,9 +87,11 @@
         </dependency>
 
         <dependency>
+            <!-- with only junit-jupiter-api, maven-surefire does not detect tests -->
+            <!-- -https://maven.apache.org/surefire/maven-surefire-plugin/examples/junit-platform.html -->
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.3.1</version>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.3.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -105,7 +109,11 @@
                 <artifactId>domain-jaxb</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
-
+            <dependency>
+                <groupId>jan.vanachte</groupId>
+                <artifactId>domain-mapper</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>jan.vanachte</groupId>
                 <artifactId>log</artifactId>
@@ -113,5 +121,17 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jvnet.jaxb2.maven2</groupId>
+                    <artifactId>maven-jaxb2-plugin</artifactId>
+                    <version>0.14.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>

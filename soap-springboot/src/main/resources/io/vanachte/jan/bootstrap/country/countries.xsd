@@ -1,0 +1,36 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://bootstrap.jan.vanachte.io/country" xmlns:tns="http://bootstrap.jan.vanachte.io/country" elementFormDefault="qualified">
+
+    <element name="getCountryRequest">
+        <complexType>
+            <sequence>
+                <element name="name" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="getCountryResponse">
+        <complexType>
+            <sequence>
+                <element name="country" type="tns:countryType"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="countryType">
+        <sequence>
+            <element name="code" type="string"/>
+            <element name="name" type="string"/>
+            <element name="capital" type="string"/>
+            <element name="currency" type="tns:currencyType"/>
+        </sequence>
+    </complexType>
+
+    <simpleType name="currencyType">
+        <restriction base="string">
+            <enumeration value="GBP"/>
+            <enumeration value="EUR"/>
+            <enumeration value="PLN"/>
+        </restriction>
+    </simpleType>
+</schema>

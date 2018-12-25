@@ -9,7 +9,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import javax.inject.Inject;
 
-@Endpoint
+@Endpoint // http://localhost:8080/ws/countries.wsdl
 @Slf4j
 public class CountryEndpoint {
 

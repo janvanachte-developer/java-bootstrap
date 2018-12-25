@@ -1,4 +1,4 @@
-package io.vanachte.jan.bootstrap.ws;
+package io.vanachte.jan.bootstrap.ws.soap;
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +14,7 @@ import org.springframework.xml.xsd.XsdSchema;
 
 @Configuration
 @EnableWs
-public class WsConfiguration extends WsConfigurerAdapter {
+public class WsSoapConfiguration extends WsConfigurerAdapter {
 
     @EnableWs
     @Configuration //https://spring.io/guides/gs/producing-web-service/

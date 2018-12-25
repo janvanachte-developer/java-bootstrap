@@ -8,3 +8,4 @@ lastname varchar
 
 
 insert into PERSONS (id, identifier, firstName, lastName) values (SEQ_PERSON_ID.NEXTVAL, 'id1','Hans','Muster');
+insert into PERSONS (id, identifier, firstName, lastName) values (SEQ_PERSON_ID.NEXTVAL, 'id2','Jeff','Bezos');

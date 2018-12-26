@@ -23,4 +23,14 @@ public class PersonServiceHardCodedValuesImpl implements PersonService {
 
         return persons;
     }
+
+    @Override
+    public List<Person> saveAll(List<Person> persons) {
+        return persons;
+    }
+
+    @Override
+    public Person save(Person person) {
+        return person;
+    }
 }

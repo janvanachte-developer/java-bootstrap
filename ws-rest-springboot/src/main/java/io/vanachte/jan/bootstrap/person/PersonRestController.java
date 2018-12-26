@@ -1,5 +1,6 @@
 package io.vanachte.jan.bootstrap.person;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,8 +17,11 @@ public class PersonRestController {
         this.service = service;
     }
 
-    @RequestMapping("/persons")
+    @RequestMapping("/persons") // @GetMapping
     public List<Person> findAll() {
         return service.findAll();
     }
+
+//    @PostMapping("/persons")
+//    public void
 }

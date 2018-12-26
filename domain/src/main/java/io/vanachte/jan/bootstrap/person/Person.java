@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@EqualsAndHashCode
 @JsonDeserialize(builder = Person.PersonBuilder.class)
 public class Person {
 

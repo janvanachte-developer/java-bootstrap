@@ -54,7 +54,13 @@ class PersonServiceJpaRepositoryImplUnitTest {
     @Test
     void findAll() {
 
-        given(personJpaRepository.findAll()).willReturn(Arrays.asList(PersonJpaEntity.builder().id(1L).identifier("personid").firstName("firstName").lastName("lastName").build()));
+        PersonJpaEntity entity = new PersonJpaEntity();
+        entity.setId(1L);
+        entity.setIdentifier("personid");
+        entity.setFirstName("firstName");
+        entity.setLastName("lastName");
+
+        given(personJpaRepository.findAll()).willReturn(Arrays.asList(entity));
 
 //        when()
         List<Person> actual = personService.findAll();

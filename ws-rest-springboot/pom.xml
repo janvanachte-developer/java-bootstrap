@@ -16,6 +16,10 @@
             <groupId>jan.vanachte</groupId>
             <artifactId>jpa-hibernate-springboot</artifactId>
         </dependency>
+        <dependency>
+            <groupId>jan.vanachte</groupId>
+            <artifactId>domain-jaxb</artifactId>
+        </dependency>
     </dependencies>
 
 

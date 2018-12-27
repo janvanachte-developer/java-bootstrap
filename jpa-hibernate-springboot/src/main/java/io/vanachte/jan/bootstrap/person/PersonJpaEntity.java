@@ -1,7 +1,9 @@
 package io.vanachte.jan.bootstrap.person;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,7 +13,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "PERSONS")
 @Data
-@Builder
 public class PersonJpaEntity {
 
     @Id

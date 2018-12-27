@@ -7,11 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.stream.*;
 import java.io.*;
 import java.util.List;
 
@@ -19,18 +14,20 @@ import java.util.List;
 @Slf4j
 public class PersonRestController {
 
-    private final PersonService service;
-    private final PersonMapperImpl mapper;
+    private final PersonService personService;
+    private final PersonXmlFacade personXmlFacade;
+    private final PersonXmlMapper personMapper;
 
     @Inject
-    public PersonRestController(PersonService service, PersonMapperImpl mapper) {
-        this.service = service;
-        this.mapper = mapper;
+    public PersonRestController(PersonService personService, PersonXmlFacade personXmlFacade, PersonXmlMapper mapper) {
+        this.personService = personService;
+        this.personXmlFacade = personXmlFacade;
+        this.personMapper = mapper;
     }
 
     @RequestMapping("/persons") // @GetMapping
     public List<Person> findAll() {
-        return service.findAll();
+        return personService.findAll();
     }
 
     @PostMapping("/upload") //https://www.jeejava.com/file-upload-example-using-spring-rest-controller/
@@ -53,69 +50,8 @@ public class PersonRestController {
         log.info("size: " + size);
 
         // Do processing with uploaded file data in Service layer
-        savePersonsFromXmlStreamReader(inputStream);
+        personXmlFacade.savePersonsFromXmlEventReader(inputStream);
 
         return new ResponseEntity<String>(originalName, HttpStatus.OK);
     }
-
-    private void savePersonsFromXmlStreamReader(InputStream inputStream) throws FactoryConfigurationError, XMLStreamException, FileNotFoundException, JAXBException {
-
-        // set up a StAX reader
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
-
-        JAXBContext jaxbContext = JAXBContext.newInstance(PersonType.class);
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-
-        try {
-            xmlStreamReader.nextTag();
-            xmlStreamReader.require(XMLStreamConstants.START_ELEMENT, null, "persons");
-
-            xmlStreamReader.nextTag();
-            while (xmlStreamReader.getEventType() == XMLStreamConstants.START_ELEMENT) {
-
-                JAXBElement<PersonType> jaxbPersonType = unmarshaller.unmarshal(xmlStreamReader, PersonType.class);
-                if (xmlStreamReader.getEventType() == XMLStreamConstants.CHARACTERS) {
-                    xmlStreamReader.next();
-                }
-
-                Person person = mapper.map(jaxbPersonType.getValue(), Person.class);
-                service.save(person);
-
-            }
-        } finally {
-            xmlStreamReader.close();
-        }
-    }
-
-//    private void savePersonsFromXmlEventReader(InputStream inputStream) throws FactoryConfigurationError, XMLStreamException, FileNotFoundException, JAXBException {
-//
-//        // set up a StAX reader
-//        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-//        XMLEventReader xmlStreamReader = xmlInputFactory.createXMLEventReader(inputStream);
-//
-//        JAXBContext jaxbContext = JAXBContext.newInstance(PersonType.class);
-//        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-//
-//        try {
-//            xmlStreamReader.nextTag();
-//            xmlStreamReader.require(XMLStreamConstants.START_ELEMENT, null, "persons");
-//
-//            xmlStreamReader.nextTag();
-//            while (xmlStreamReader.getEventType() == XMLStreamConstants.START_ELEMENT) {
-//
-//                JAXBElement<PersonType> jaxbPersonType = unmarshaller.unmarshal(xmlStreamReader, PersonType.class);
-//                if (xmlStreamReader.getEventType() == XMLStreamConstants.CHARACTERS) {
-//                    xmlStreamReader.next();
-//                }
-//
-//                Person person = mapper.map(jaxbPersonType.getValue(), Person.class);
-//                service.save(person);
-//
-//            }
-//        } finally {
-//            xmlStreamReader.close();
-//        }
-//    }
-
 }

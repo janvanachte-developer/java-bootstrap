@@ -1,45 +1,64 @@
 package io.vanachte.jan.bootstrap.person;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class PersonRestControllerUnitTest {
+class PersonXmlFacadeStaxImplUnitTest {
 
     @InjectMocks
-    PersonRestController personRestController;
+    PersonXmlFacadeStaxImpl personXmlFacade;
 
     @Mock
     PersonService personService;
 
     @Spy
-    PersonMapper personMapper = new PersonMapperImpl();
+    PersonXmlMapper personMapper = new PersonXmlMapperModelMapperImpl();
 
     @Test
-    void uploadFile() throws Exception {
+    void stax_xmlStreamReader_should_upload_xml_file() throws Exception {
 
         // given
+        InputStream inputStream = xml_file_with_10000_persons();
+
+        // when
+        int actual = personXmlFacade.savePersonsFromXmlStreamReader(inputStream);
+
+        // then
+        Assertions.assertEquals(10000, actual);
+        Mockito.verify(personService, Mockito.atLeast(10000)).save(ArgumentMatchers.any(Person.class));
+   }
+
+    @Test
+    void stax_xmlEventReader_should_upload_xml_file() throws Exception {
+
+        // given
+        InputStream inputStream = xml_file_with_10000_persons();
+
+        // when
+        int actual = personXmlFacade.savePersonsFromXmlEventReader(inputStream);
+
+        // then
+        Assertions.assertEquals(10000, actual);
+        Mockito.verify(personService, Mockito.atLeast(10000)).save(ArgumentMatchers.any(Person.class));
+    }
+
+    private InputStream xml_file_with_10000_persons() throws IOException {
         InputStream inputStream = Files.newInputStream(Paths.get("/tmp/xml-benchmark/large-person-10000.xml"));
-        assertNotNull(inputStream);
+        Assertions.assertNotNull(inputStream);
         MultipartFile file = new MultipartFile() {
             @Override
             public String getName() {
@@ -81,12 +100,6 @@ class PersonRestControllerUnitTest {
                 // not imaplemented/ not needed
             }
         };
-
-        // when
-        ResponseEntity<String> actual = personRestController.uploadFile(file);
-
-        // then
-        assertNotNull(actual);
-        verify(personService,atLeast(10000)).save(any(Person.class));
-   }
+        return inputStream;
+    }
 }

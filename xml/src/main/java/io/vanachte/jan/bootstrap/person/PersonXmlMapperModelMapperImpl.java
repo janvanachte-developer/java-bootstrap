@@ -6,7 +6,7 @@ import org.modelmapper.config.Configuration;
 import javax.inject.Named;
 
 @Named
-public class PersonMapperImpl implements PersonMapper {
+public class PersonXmlMapperModelMapperImpl implements PersonXmlMapper {
 
 
     private static ModelMapper modelMapper;

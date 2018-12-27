@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>domain-mapper</artifactId>
+    <artifactId>domain-personXmlMapper</artifactId>
 
     <dependencies>
         <dependency>

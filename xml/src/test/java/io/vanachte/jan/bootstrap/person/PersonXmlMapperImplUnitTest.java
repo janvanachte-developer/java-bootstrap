@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PersonMapperImplUnitTest {
+public class PersonXmlMapperImplUnitTest {
 
-    PersonMapper personMapper = new PersonMapperImpl();
+    PersonXmlMapper personMapper = new PersonXmlMapperModelMapperImpl();
 
     @Test
     public void personType_should_be_mapped_to_person() {

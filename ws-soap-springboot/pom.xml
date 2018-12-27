@@ -58,7 +58,7 @@
         </dependency>
         <dependency>
             <groupId>jan.vanachte</groupId>
-            <artifactId>domain-mapper</artifactId>
+            <artifactId>domain-personXmlMapper</artifactId>
         </dependency>
 
 

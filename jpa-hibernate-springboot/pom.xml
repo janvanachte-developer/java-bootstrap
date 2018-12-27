@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>jan.vanachte</groupId>
-            <artifactId>domain-personXmlMapper</artifactId>
+            <artifactId>domain-mapper</artifactId>
             <scope>compile</scope>
         </dependency>
         <!--<dependency>-->

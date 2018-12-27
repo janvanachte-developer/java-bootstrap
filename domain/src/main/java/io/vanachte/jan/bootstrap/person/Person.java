@@ -2,12 +2,17 @@ package io.vanachte.jan.bootstrap.person;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import io.vanachte.jan.bootstrap.address.Address;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @EqualsAndHashCode
 @JsonDeserialize(builder = Person.PersonBuilder.class)
 public class Person {
@@ -18,7 +23,12 @@ public class Person {
     @NonNull
     String lastName;
     @Builder.Default
-    Status status = Status.INITIAL;
+    @NonFinal
+    Status status = Status.STATUS_1;
+
+    @Builder.Default
+    @Getter(AccessLevel.NONE)
+    List<Address> addresses = new ArrayList<>();
 
     public void setStatus(Status status) throws Exception {
         if ( this.status.canBeFollewedBy(status)) {
@@ -28,15 +38,23 @@ public class Person {
         }
     }
 
+    public void add(Address address) {
+        addresses.add(address);
+    }
+
+    public List<Address> getAddresses() {
+        return new ArrayList<>(addresses);
+    }
+
     @JsonPOJOBuilder(withPrefix = "")
     public static final class PersonBuilder {
 
     }
 
     public enum Status {
-        INITIAL,
-        STARTED,
-        FINISHED;
+        STATUS_1,
+        STATUS_2,
+        STATUS_3;
 
         public boolean canBeFollewedBy(Status nextStatus) {
             // a status cannot be followed by itself
@@ -45,12 +63,12 @@ public class Person {
             }
 
             // every status can be followed by the last status (except for the last - but that is already handled)
-            if ( FINISHED.equals(nextStatus)) {
+            if ( STATUS_3.equals(nextStatus)) {
                 return true;
             }
 
             // first status can be folled by second
-            if ( INITIAL.equals(this) && STARTED.equals(nextStatus)) {
+            if ( STATUS_1.equals(this) && STATUS_2.equals(nextStatus)) {
                 return true;
             }
 

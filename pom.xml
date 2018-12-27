@@ -28,6 +28,7 @@
 
         <module>cucumber</module>
         <module>test-junit5</module>
+        <module>jpa</module>
 
     </modules>
 
@@ -125,6 +126,12 @@
         <dependencies>
             <dependency>
                 <groupId>jan.vanachte</groupId>
+                <artifactId>log</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jan.vanachte</groupId>
                 <artifactId>domain</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
@@ -135,20 +142,20 @@
             </dependency>
             <dependency>
                 <groupId>jan.vanachte</groupId>
-                <artifactId>domain-personXmlMapper</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>jan.vanachte</groupId>
                 <artifactId>xml</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>jan.vanachte</groupId>
-                <artifactId>log</artifactId>
+                <artifactId>domain-mapper</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
+            <dependency>
+                <groupId>jan.vanachte</groupId>
+                <artifactId>jpa</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>jan.vanachte</groupId>
                 <artifactId>jpa-hibernate-springboot</artifactId>

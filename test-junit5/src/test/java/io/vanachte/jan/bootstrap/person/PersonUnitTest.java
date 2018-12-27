@@ -1,10 +1,14 @@
 package io.vanachte.jan.bootstrap.person;
 
+import io.vanachte.jan.bootstrap.address.Address;
+import io.vanachte.jan.bootstrap.country.Country;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static io.vanachte.jan.bootstrap.person.Person.Status.*;
@@ -114,11 +118,11 @@ public class PersonUnitTest {
         }
 
         @Test
-        @DisplayName("A Person should have a status. If no status is given is should default to INITIAL")
+        @DisplayName("A Person should have a status. If no status is given is should default to STATUS_1")
         public void a_person_should_have_a_status() {
 
             // given
-            Person.Status defaultStatus = INITIAL;
+            Person.Status defaultStatus = STATUS_1;
 
             // when
             Person person = Person.builder().identifier("Foo").lastName("Foo").build();
@@ -173,16 +177,43 @@ public class PersonUnitTest {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
             return Stream.of(
-                    Arguments.of(INITIAL, INITIAL, FALSE),
-                    Arguments.of(INITIAL, STARTED, TRUE),
-                    Arguments.of(INITIAL, FINISHED, TRUE),
-                    Arguments.of(STARTED, INITIAL, FALSE),
-                    Arguments.of(STARTED, STARTED, FALSE),
-                    Arguments.of(STARTED, FINISHED, TRUE),
-                    Arguments.of(FINISHED, INITIAL, FALSE),
-                    Arguments.of(FINISHED, STARTED, FALSE),
-                    Arguments.of(FINISHED, FINISHED, FALSE)
+                    Arguments.of(STATUS_1, STATUS_1, FALSE),
+                    Arguments.of(STATUS_1, STATUS_2, TRUE),
+                    Arguments.of(STATUS_1, STATUS_3, TRUE),
+                    Arguments.of(STATUS_2, STATUS_1, FALSE),
+                    Arguments.of(STATUS_2, STATUS_2, FALSE),
+                    Arguments.of(STATUS_2, STATUS_3, TRUE),
+                    Arguments.of(STATUS_3, STATUS_1, FALSE),
+                    Arguments.of(STATUS_3, STATUS_2, FALSE),
+                    Arguments.of(STATUS_3, STATUS_3, FALSE)
             );
+        }
+    }
+
+    @Nested
+    @DisplayName("Unit test for Person Address manipulation")
+    public class AddressTest {
+
+        @Test
+            @DisplayName("Address list should be immutable (copy)")
+        public void address_list_should_be_immutable_copy() {
+
+            // given
+            List<Address> addresses = new ArrayList<>();
+            addresses.add(Address.builder().country(Country.builder().code("BE").build()).build());
+            addresses.add(Address.builder().country(Country.builder().code("BE").build()).build());
+            addresses.add(Address.builder().country(Country.builder().code("BE").build()).build());
+
+            Person person = Person.builder().identifier("ID").lastName("lastName").addresses(addresses).build();
+
+            List<Address> addressesCopy = person.getAddresses();
+
+            // when
+            addressesCopy.remove(0);
+
+            // then
+            assertEquals(3,person.getAddresses().size());
+
         }
     }
 }

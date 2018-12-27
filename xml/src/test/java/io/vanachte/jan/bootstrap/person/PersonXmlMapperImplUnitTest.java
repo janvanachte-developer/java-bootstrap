@@ -25,7 +25,7 @@ public class PersonXmlMapperImplUnitTest {
         assertEquals("ID", actual.getIdentifier());
         assertEquals("FIRST",actual.getFirstName());
         assertEquals("LAST", actual.getLastName());
-        assertEquals(Person.Status.INITIAL, actual.getStatus());
+        assertEquals(Person.Status.STATUS_1, actual.getStatus());
 
     }
 

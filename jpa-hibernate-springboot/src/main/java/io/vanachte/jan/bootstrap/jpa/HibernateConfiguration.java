@@ -32,7 +32,12 @@ public class HibernateConfiguration {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean
                 = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
-        entityManagerFactoryBean.setPackagesToScan(new String[] { "io.vanachte.jan.bootstrap.person"});
+        entityManagerFactoryBean.setPackagesToScan(new String[] {
+                "io.vanachte.jan.bootstrap.person",
+                "io.vanachte.jan.bootstrap.address",
+                "io.vanachte.jan.bootstrap.country",
+                "io.vanachte.jan.bootstrap.jpa"
+        });
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);

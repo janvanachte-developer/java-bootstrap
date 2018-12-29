@@ -2,6 +2,7 @@ package io.vanachte.jan.bootstrap.person;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -30,6 +31,7 @@ public class PersonServiceJpaRepositoryImpl implements PersonService {
     }
 
 
+    @Transactional
     @Override
     public List<Person> saveAll(List<Person> persons) {
 
@@ -53,6 +55,7 @@ public class PersonServiceJpaRepositoryImpl implements PersonService {
 
 
     @Override
+    @Transactional
     public Person save(Person person) {
 
         PersonJpaEntity entity = personRepository.save(modelMapper.map(person, PersonJpaEntity.class));

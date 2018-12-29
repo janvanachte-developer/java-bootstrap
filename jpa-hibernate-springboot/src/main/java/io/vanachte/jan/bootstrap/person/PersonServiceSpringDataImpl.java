@@ -12,20 +12,22 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @Named
-public class PersonServiceJpaRepositoryImpl implements PersonService {
+public class PersonServiceSpringDataImpl implements PersonService {
 
-    private final PersonJpaRepository personRepository;
+    private final PersonRepositorySpringDataImpl personRepository;
+    private final PersonReadOnlyRepositorySpringDataImpl readOnlyRepository;
     private final ModelMapper modelMapper;
 
     @Inject
-    public PersonServiceJpaRepositoryImpl(PersonJpaRepository personRepository, ModelMapper modelMapper) {
+    public PersonServiceSpringDataImpl(PersonRepositorySpringDataImpl personRepository, PersonReadOnlyRepositorySpringDataImpl readOnlyRepository, ModelMapper modelMapper) {
         this.personRepository = personRepository;
+        this.readOnlyRepository = readOnlyRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public List<Person> findAll() {
-        return personRepository.findAll().stream()
+        return readOnlyRepository.findAll().stream()
                 .map(entity -> map(entity,Person.class))
                 .collect(toList());
     }

@@ -1,32 +1,23 @@
 package io.vanachte.jan.bootstrap.person;
 
 import io.vanachte.jan.bootstrap.mapper.MapperConfiguration;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mapstruct.Mapper;
-import org.mapstruct.MapperConfig;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
 //@ExtendWith(MockitoExtension.class)
@@ -38,10 +29,13 @@ class PersonServiceJpaRepositoryImplUnitTest {
     ApplicationContext applicationContext;
 
     @InjectMocks
-    PersonServiceJpaRepositoryImpl personService;
+    PersonServiceSpringDataImpl personService;
 
     @Mock
-    PersonJpaRepository personJpaRepository = mock(PersonJpaRepository.class, withSettings().verboseLogging());
+    PersonReadOnlyRepositorySpringDataImpl personReadOnlyRepository;
+
+    @Mock
+    PersonRepositorySpringDataImpl personRepository = mock(PersonRepositorySpringDataImpl.class, withSettings().verboseLogging());
 
     @Spy
     ModelMapper modelMapper = new ModelMapper();
@@ -60,7 +54,7 @@ class PersonServiceJpaRepositoryImplUnitTest {
         entity.setFirstName("firstName");
         entity.setLastName("lastName");
 
-        given(personJpaRepository.findAll()).willReturn(Arrays.asList(entity));
+        given(personReadOnlyRepository.findAll()).willReturn(Arrays.asList(entity));
 
 //        when()
         List<Person> actual = personService.findAll();

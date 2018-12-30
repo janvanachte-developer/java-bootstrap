@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 //@ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {MapperConfiguration.class})
-class PersonServiceJpaRepositoryImplUnitTest {
+class PersonServiceJpaRepositoryImplUnitJUnit5Test {
 
     @Inject
     ApplicationContext applicationContext;

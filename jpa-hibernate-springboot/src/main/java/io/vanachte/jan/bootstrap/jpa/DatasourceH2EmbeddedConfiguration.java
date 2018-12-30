@@ -17,8 +17,8 @@ public class DatasourceH2EmbeddedConfiguration {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         EmbeddedDatabase dataSource = builder
                 .setType(EmbeddedDatabaseType.H2) //.H2 or .DERBY
-//               .addScript("db/sql/create-db.sql")
-                .addScript("db/sql/insert-data.sql")
+//                .addScript("schema.sql") // automagically
+//                .addScript("data.sql") // automagically
                 .build();
         return dataSource;
     }

@@ -1,12 +1,17 @@
 package io.vanachte.jan.bootstrap.jpa;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Embeddable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Embeddable
-public class AuditColumns {
+@Getter
+@Setter
+public class Audit {
 
-    private LocalDateTime created;
+    private LocalDateTime createdOn;
     private LocalDate keepUntil;
 }

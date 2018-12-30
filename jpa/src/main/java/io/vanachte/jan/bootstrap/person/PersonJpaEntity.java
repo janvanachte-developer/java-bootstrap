@@ -1,7 +1,9 @@
 package io.vanachte.jan.bootstrap.person;
 
 import io.vanachte.jan.bootstrap.address.AddressJpaEntity;
-import io.vanachte.jan.bootstrap.jpa.AuditColumns;
+import io.vanachte.jan.bootstrap.jpa.Audit;
+import io.vanachte.jan.bootstrap.jpa.AuditEntityListener;
+import io.vanachte.jan.bootstrap.jpa.Auditable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Fetch;
@@ -15,8 +17,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "PERSONS")
+@EntityListeners(AuditEntityListener.class)
 @Data
-public class PersonJpaEntity {
+public class PersonJpaEntity implements Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PERSON_ID")
@@ -34,7 +37,8 @@ public class PersonJpaEntity {
     private Boolean active;
 
     @Embedded
-    private AuditColumns audit;
+    @EqualsAndHashCode.Exclude
+    private Audit audit;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)

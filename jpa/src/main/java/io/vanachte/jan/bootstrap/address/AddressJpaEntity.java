@@ -17,6 +17,7 @@ public class AddressJpaEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ADDRESS_ID")
     @SequenceGenerator(name = "SEQ_ADDRESS_ID")
     private long id;
+    private String identifier;
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    private CountryJpaEntity country;
@@ -38,4 +39,5 @@ public class AddressJpaEntity {
         }
         person.remove(this);
     }
+
 }

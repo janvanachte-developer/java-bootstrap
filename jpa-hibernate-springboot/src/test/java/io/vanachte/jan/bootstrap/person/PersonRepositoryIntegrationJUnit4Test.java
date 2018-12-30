@@ -27,7 +27,7 @@ public class PersonRepositoryIntegrationJUnit4Test {
     TestEntityManager entityManager;
 
     @Inject
-    PersonReadOnlyRepositorySpringDataImpl personRepository;
+    PersonReadOnlyRepositorySpringDataImpl repository;
 
     @Test
     public void findByIdentifier_should_return_entity_if_one_exists() {
@@ -39,7 +39,7 @@ public class PersonRepositoryIntegrationJUnit4Test {
         entityManager.flush();
 
         // when
-        PersonJpaEntity actual = personRepository.findByIdentifier("IDENTIFIER");
+        PersonJpaEntity actual = repository.findByIdentifier("IDENTIFIER");
 
         // then
         assertEquals(entity.getIdentifier(), actual.getIdentifier());

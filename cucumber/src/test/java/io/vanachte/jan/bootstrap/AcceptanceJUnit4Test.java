@@ -10,6 +10,6 @@ import org.junit.runner.RunWith;
         glue = {"io/vanachte/jan/kickstarter/cucumber"},
         plugin = {"pretty"}
         )
-public class AcceptanceTest {
+public class AcceptanceJUnit4Test {
 
 }

@@ -26,6 +26,7 @@ public class Person {
     @NonFinal
     Status status = Status.STATUS_1;
 
+
     @Builder.Default
     @Getter(AccessLevel.NONE)
     List<Address> addresses = new ArrayList<>();

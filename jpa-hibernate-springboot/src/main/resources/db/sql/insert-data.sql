@@ -32,10 +32,12 @@ identifier varchar,
 firstname varchar,
 lastname varchar,
 status VARCHAR,
-active VARCHAR
+active VARCHAR,
+created TIMESTAMP,
+keepUntil DATE
 );
-insert into PERSONS (id, identifier, firstName, lastName, status, active) values (SEQ_PERSON_ID.NEXTVAL, 'id1','Hans','Muster','STATUS_1', 'Y"');
-insert into PERSONS (id, identifier, firstName, lastName, status, active) values (SEQ_PERSON_ID.NEXTVAL, 'id2','Jeff','Bezos','STATUS_2', 'Y');
+insert into PERSONS (id, identifier, firstName, lastName, status, active, created, keepUntil) values (SEQ_PERSON_ID.NEXTVAL, 'id1','Hans','Muster','STATUS_1', 'Y', SYSDATE, SYSDATE);
+insert into PERSONS (id, identifier, firstName, lastName, status, active, created, keepUntil) values (SEQ_PERSON_ID.NEXTVAL, 'id2','Jeff','Bezos','STATUS_2', 'Y', SYSDATE, SYSDATE);
 
 CREATE TABLE person_address (
 person_id NUMBER NOT NULL,

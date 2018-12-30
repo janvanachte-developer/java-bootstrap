@@ -24,4 +24,18 @@ public class AddressJpaEntity {
     @ManyToMany(mappedBy = "addresses")
     @EqualsAndHashCode.Exclude
     private Set<PersonJpaEntity> persons;
+
+    public void add(PersonJpaEntity person) {
+        if ( !persons.contains(person) ) {
+            persons.add(person);
+        }
+        person.add(this);
+    }
+
+    public void remove(PersonJpaEntity person) {
+        if ( persons.contains(person) ) {
+            persons.remove(person);
+        }
+        person.remove(this);
+    }
 }

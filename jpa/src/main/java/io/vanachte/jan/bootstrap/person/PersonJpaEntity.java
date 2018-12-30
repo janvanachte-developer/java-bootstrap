@@ -1,6 +1,7 @@
 package io.vanachte.jan.bootstrap.person;
 
 import io.vanachte.jan.bootstrap.address.AddressJpaEntity;
+import io.vanachte.jan.bootstrap.jpa.AuditColumns;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Fetch;
@@ -32,6 +33,9 @@ public class PersonJpaEntity {
 //    @Convert(converter = BooleanToVarcharAttributeConverter.class)
     private Boolean active;
 
+    @Embedded
+    private AuditColumns audit;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(
@@ -41,4 +45,18 @@ public class PersonJpaEntity {
     )
     @EqualsAndHashCode.Exclude
     private Set<AddressJpaEntity> addresses;
+
+    public void add(AddressJpaEntity address) {
+        if( !addresses.contains(address) ) {
+            addresses.add(address);
+        }
+        address.add(this);
+    }
+
+    public void remove(AddressJpaEntity address) {
+        if ( addresses.contains(address) ) {
+            addresses.remove(address);
+        }
+        address.remove(this);
+    }
 }

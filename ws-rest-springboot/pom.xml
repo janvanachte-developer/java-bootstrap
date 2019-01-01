@@ -14,21 +14,20 @@
     <dependencies>
         <dependency>
             <groupId>jan.vanachte</groupId>
+            <artifactId>jpa-hibernate-springboot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jan.vanachte</groupId>
             <artifactId>domain-jaxb</artifactId>
         </dependency>
         <dependency>
             <groupId>jan.vanachte</groupId>
             <artifactId>xml</artifactId>
         </dependency>
-        <dependency>
-            <groupId>jan.vanachte</groupId>
-            <artifactId>jpa-hibernate-springboot</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

@@ -23,6 +23,10 @@ public class HibernateConfiguration {
 //        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty(
                 "hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("hibernate.generate_sql", "true");
+        properties.setProperty("hibernate.format_sql", "true");
+        properties.setProperty("hibernate.generate_statistic", "true");
 
         return properties;
     }
@@ -32,7 +36,7 @@ public class HibernateConfiguration {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean
                 = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
-        entityManagerFactoryBean.setPackagesToScan(new String[] {
+        entityManagerFactoryBean.setPackagesToScan(new String[]{
                 "io.vanachte.jan.bootstrap.person",
                 "io.vanachte.jan.bootstrap.address",
                 "io.vanachte.jan.bootstrap.country",
@@ -48,7 +52,7 @@ public class HibernateConfiguration {
 
     @Bean
     public PlatformTransactionManager transactionManager(
-            EntityManagerFactory emf){
+            EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
 
@@ -56,7 +60,7 @@ public class HibernateConfiguration {
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 }

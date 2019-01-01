@@ -1,5 +1,6 @@
 package io.vanachte.jan.bootstrap.address;
 
+import io.vanachte.jan.bootstrap.country.Country;
 import io.vanachte.jan.bootstrap.jpa.HibernateConfiguration;
 import io.vanachte.jan.bootstrap.jpa.JpaRepositoryConfiguration;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.inject.Inject;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
@@ -23,43 +29,41 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest // https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/autoconfigure/orm/jpa/DataJpaTest.html
 // https://www.baeldung.com/spring-boot-testing
 // schema.sql and data.sql are= loaded automagically
-public class AddressRepositoryIntegrationJUnit5Test {
+public class AddressServiceIntegrationJUnit5Test {
 
     @Inject
     TestEntityManager entityManager;
 
     @Inject
-    AddressRepositoryJpaImpl repository;
+    AddressService service;
 
     @Test
-    public void save_should_return_entity_with_id_filled() {
+    public void save_should_persist_parent_and_children() {
 
         // given
-        AddressJpaEntity entity = new AddressJpaEntity();
-        entityManager.persist(entity);
-        entityManager.flush();
+        Country country = Country.builder().code("BE").build();
 
         // when
-        AddressJpaEntity actual = repository.save(entity);
-        entityManager.flush(); // id is only generated when saving to db
+        Address actual = service.create(country, "Line 1", "Line 2", "Line 3");
 
         // then
-        assertNotNull(actual);
-        assertTrue(actual.getId() != 0,"Id should not be null / 0");
+        assertEquals(3,actual.getLines().size());
     }
 
     @Test
-    public void save_should_persist_entity() {
+    public void save_should_persist_all_attributes() {
 
         // given
-        AddressJpaEntity entity = new AddressJpaEntity();
-        Long id = repository.save(entity).getId();
+        Country country = Country.builder().code("UK").build();
 
         // when
-        AddressJpaEntity actual = entityManager.find(AddressJpaEntity.class, id);
+        Address actual = service.create(country, "Line 1", "Line 2", "Line 3");
 
         // then
-        assertNotNull(actual);
-        assertTrue(actual.getId() != 0,"Id should not be null / 0");
+        assertEquals("UK",actual.getCountry().getCode());
+        assertEquals(3,actual.getLines().size());
+        assertEquals("Line 1",actual.getLines().get(0).getLine());
+        assertEquals("Line 2",actual.getLines().get(1).getLine());
+        assertEquals("Line 3",actual.getLines().get(2).getLine());
     }
 }

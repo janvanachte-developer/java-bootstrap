@@ -5,10 +5,14 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 
+import java.util.List;
+
 @Value
 @Builder
 public class Address {
 
+    private List<AddressLine> lines;
+
     @NonNull
-    Country country;
+    private Country country;
 }

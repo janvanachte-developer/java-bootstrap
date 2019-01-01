@@ -23,7 +23,8 @@ public class PersonJpaEntity implements Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PERSON_ID")
-    @SequenceGenerator(name = "SEQ_PERSON_ID")
+    @SequenceGenerator(name = "SEQ_PERSON_ID", sequenceName = "SEQ_PERSON_ID", allocationSize = 1)  // 'allocationSize' should be same a 'INCREMENT BY'
+    // negative values: https://stackoverflow.com/questions/9861416/hibernate-generates-negative-id-values-when-using-a-sequence
     private long id;
 
 //    @NaturalId

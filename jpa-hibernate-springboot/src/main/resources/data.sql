@@ -7,8 +7,8 @@ insert into COUNTRIES (id, identifier) values (SEQ_COUNTRY_ID.NEXTVAL, 'UK');
 insert into COUNTRIES (id, identifier) values (SEQ_COUNTRY_ID.NEXTVAL, 'ES');
 insert into COUNTRIES (id, identifier) values (SEQ_COUNTRY_ID.NEXTVAL, 'PT');
 
-insert into ADDRESSES (id, identifier, country_id) VALUES (SEQ_ADDRESS_ID.NEXTVAL,'id1', 1);
-insert into ADDRESSES (id, identifier, country_id) VALUES (SEQ_ADDRESS_ID.NEXTVAL,'id2', 1);
+insert into ADDRESSES (id, country_id) VALUES (SEQ_ADDRESS_ID.NEXTVAL,'BE');
+insert into ADDRESSES (id, country_id) VALUES (SEQ_ADDRESS_ID.NEXTVAL,'BE');
 
 insert into PERSONS (id, identifier, firstName, lastName, status, active, createdOn, keepUntil) values (SEQ_PERSON_ID.NEXTVAL, 'id1','Hans','Muster','STATUS_1', 'Y', SYSDATE, SYSDATE);
 insert into PERSONS (id, identifier, firstName, lastName, status, active, createdOn, keepUntil) values (SEQ_PERSON_ID.NEXTVAL, 'id2','Jeff','Bezos','STATUS_2', 'Y', SYSDATE, SYSDATE);

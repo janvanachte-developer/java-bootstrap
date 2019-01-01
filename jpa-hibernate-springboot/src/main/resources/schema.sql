@@ -8,13 +8,21 @@ PRIMARY KEY (id)
 create sequence SEQ_ADDRESS_ID INCREMENT BY 1;
 create table ADDRESSES (
 id number NOT NULL,
-identifier varchar,
-country_id number,
-PRIMARY KEY (id),
-FOREIGN KEY (country_id) REFERENCES COUNTRIES(id)
+country_id varchar,
+PRIMARY KEY (id)
+-- FOREIGN KEY (country_id) REFERENCES COUNTRIES(id)
 );
 
-create sequence SEQ_PERSON_ID INCREMENT BY 1;
+CREATE SEQUENCE seq_address_line_id INCREMENT BY 1;
+create table ADDRESS_LINES (
+ID number not null,
+LINE varchar,
+ADDRESS_ID number not null,
+primary key(ID),
+foreign key (ADDRESS_ID) references ADDRESSES(ID)
+);
+
+create sequence SEQ_PERSON_ID increment by 1;
 create table PERSONS (
 id number NOT NULL,
 identifier varchar,

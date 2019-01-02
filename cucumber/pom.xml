@@ -51,6 +51,15 @@
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- override parent dependency for junit5 by pointing to empty jar -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../nojunit5.jar</systemPath>
+        </dependency>
+
     </dependencies>
 
 </project>

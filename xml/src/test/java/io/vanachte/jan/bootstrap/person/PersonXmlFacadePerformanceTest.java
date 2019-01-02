@@ -55,7 +55,8 @@ public class PersonXmlFacadePerformanceTest {
             System.gc();
             System.gc();
 
-            for (int i = 0; i < 10; i++) {
+//            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 2; i++) {
 
                 File file = new File(OUTPUT_FOLDER + File.separatorChar + "large-person-10000.xml");
 
@@ -87,30 +88,30 @@ public class PersonXmlFacadePerformanceTest {
                     log.info("Stax Event Reader (" + number + "): -  Time taken in ms: " + (end - start));
                 }
 
-                readLargeFileWithJaxb(new File(OUTPUT_FOLDER + File.separatorChar + "large-person-10000.xml"), 10000);
-                readLargeFileWithJaxb(new File(OUTPUT_FOLDER + File.separatorChar + "large-person-100000.xml"),
-                        100000);
-                readLargeFileWithJaxb(new File(OUTPUT_FOLDER
-                                + File.separatorChar + "large-person-1000000.xml"),
-                        1000000);
-
-                readLargeXmlWithStax(new File(OUTPUT_FOLDER
-                        + File.separatorChar + "large-person-10000.xml"), 10000);
-                readLargeXmlWithStax(new File(OUTPUT_FOLDER
-                                + File.separatorChar + "large-person-100000.xml"),
-                        100000);
-                readLargeXmlWithStax(new File(OUTPUT_FOLDER
-                                + File.separatorChar + "large-person-1000000.xml"),
-                        1000000);
-
-                readLargeXmlWithFasterStax(new File(OUTPUT_FOLDER
-                        + File.separatorChar + "large-person-10000.xml"), 10000);
-                readLargeXmlWithFasterStax(new File(OUTPUT_FOLDER
-                                + File.separatorChar + "large-person-100000.xml"),
-                        100000);
-                readLargeXmlWithFasterStax(new File(OUTPUT_FOLDER
-                                + File.separatorChar + "large-person-1000000.xml"),
-                        1000000);
+//                readLargeFileWithJaxb(new File(OUTPUT_FOLDER + File.separatorChar + "large-person-10000.xml"), 10000);
+//                readLargeFileWithJaxb(new File(OUTPUT_FOLDER + File.separatorChar + "large-person-100000.xml"),
+//                        100000);
+//                readLargeFileWithJaxb(new File(OUTPUT_FOLDER
+//                                + File.separatorChar + "large-person-1000000.xml"),
+//                        1000000);
+//
+//                readLargeXmlWithStax(new File(OUTPUT_FOLDER
+//                        + File.separatorChar + "large-person-10000.xml"), 10000);
+//                readLargeXmlWithStax(new File(OUTPUT_FOLDER
+//                                + File.separatorChar + "large-person-100000.xml"),
+//                        100000);
+//                readLargeXmlWithStax(new File(OUTPUT_FOLDER
+//                                + File.separatorChar + "large-person-1000000.xml"),
+//                        1000000);
+//
+//                readLargeXmlWithFasterStax(new File(OUTPUT_FOLDER
+//                        + File.separatorChar + "large-person-10000.xml"), 10000);
+//                readLargeXmlWithFasterStax(new File(OUTPUT_FOLDER
+//                                + File.separatorChar + "large-person-100000.xml"),
+//                        100000);
+//                readLargeXmlWithFasterStax(new File(OUTPUT_FOLDER
+//                                + File.separatorChar + "large-person-1000000.xml"),
+//                        1000000);
             }
 
         } catch (Exception e) {

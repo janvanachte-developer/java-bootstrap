@@ -1,19 +1,20 @@
-package io.vanachte.jan.bootstrap.person;
+package io.vanachte.jan.bootstrap.address;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+//import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PersonRestControllerClientServerJUnit4Test {
+public class AddressRestControllerClientServerJUnit5Test {
 
     @LocalServerPort
     private int port;
@@ -27,7 +28,7 @@ public class PersonRestControllerClientServerJUnit4Test {
         // given
 
         // when
-        String actual = restTemplate.getForObject("http://localhost:" + port + "/persons",
+        String actual = restTemplate.getForObject("http://localhost:" + port + "/addresses",
                 String.class);
 
         //then

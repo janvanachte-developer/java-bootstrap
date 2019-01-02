@@ -17,9 +17,9 @@ CREATE SEQUENCE seq_address_line_id INCREMENT BY 1;
 create table ADDRESS_LINES (
 ID number not null,
 LINE varchar,
-ADDRESS_ID number not null,
-primary key(ID),
-foreign key (ADDRESS_ID) references ADDRESSES(ID)
+ADDRESS_ID number,
+primary key(ID)
+-- foreign key (ADDRESS_ID) references ADDRESSES(ID)
 );
 
 create sequence SEQ_PERSON_ID increment by 1;

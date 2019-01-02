@@ -41,7 +41,7 @@ public class PersonJpaEntity implements Auditable {
     @EqualsAndHashCode.Exclude
     private Audit audit;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(
             name = "person_address",

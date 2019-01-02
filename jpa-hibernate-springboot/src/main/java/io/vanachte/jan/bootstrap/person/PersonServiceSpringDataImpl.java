@@ -1,5 +1,7 @@
 package io.vanachte.jan.bootstrap.person;
 
+import io.vanachte.jan.bootstrap.address.AddressJpaEntity;
+import io.vanachte.jan.bootstrap.address.AddressLineJpaEntity;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,7 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -51,11 +56,6 @@ public class PersonServiceSpringDataImpl implements PersonService {
                 .collect(toList());
     }
 
-    private <T> Person map(PersonJpaEntity entity, Class<T> clazz) {
-        return Person.builder().identifier(entity.getIdentifier()).firstName(entity.getFirstName()).lastName(entity.getLastName()).build();
-    }
-
-
     @Override
     @Transactional
     public Person save(Person person) {
@@ -64,4 +64,9 @@ public class PersonServiceSpringDataImpl implements PersonService {
 
         return map(entity, Person.class);
     }
+
+    private <T> Person map(PersonJpaEntity entity, Class<T> clazz) {
+        return Person.builder().identifier(entity.getIdentifier()).firstName(entity.getFirstName()).lastName(entity.getLastName()).build();
+    }
+
 }

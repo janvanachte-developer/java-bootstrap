@@ -23,8 +23,8 @@ public class AddressJpaEntity {
     @EqualsAndHashCode.Exclude
     // https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
     // https://thoughts-on-java.org/best-practices-many-one-one-many-associations-mappings/
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "address_id")
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "address_id")
     private List<AddressLineJpaEntity> lines = new ArrayList<>(); // https://thoughts-on-java.org/association-mappings-bag-list-set/
 
     @Column(name = "country_id")

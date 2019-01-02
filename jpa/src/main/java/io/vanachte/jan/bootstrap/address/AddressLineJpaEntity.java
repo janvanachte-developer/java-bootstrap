@@ -32,10 +32,10 @@ public class AddressLineJpaEntity extends AddressLine {
         super("");
     }
 
-    @EqualsAndHashCode.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     // https://thoughts-on-java.org/best-practices-many-one-one-many-associations-mappings/
 //    private long address_id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id",nullable = false)
+    @EqualsAndHashCode.Exclude
     private AddressJpaEntity address;
 }

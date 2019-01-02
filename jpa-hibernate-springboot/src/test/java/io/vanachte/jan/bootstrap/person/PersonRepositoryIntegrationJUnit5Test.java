@@ -51,32 +51,25 @@ public class PersonRepositoryIntegrationJUnit5Test {
         assertEquals(entity.getIdentifier(), actual.getIdentifier());
     }
 
-    private PersonJpaEntity createPersonEntity(String identifier) {
+    public static PersonJpaEntity createPersonEntity(String identifier) {
 
         PersonJpaEntity entity = new PersonJpaEntity();
         entity.setIdentifier(identifier);
         entity.setFirstName("PERSON_FIRST_NAME");
         entity.setLastName("PERSON_LAST_NAME");
 
-        Set<AddressJpaEntity> addresses = new HashSet<>();
-
         AddressJpaEntity address1 = new AddressJpaEntity();
         address1.setCountry("BE");
-        List<AddressLineJpaEntity> lines1 = new ArrayList<>();
-        lines1.add(new AddressLineJpaEntity("Address 1 Line 1"));
-        lines1.add(new AddressLineJpaEntity("Address 1 Line 2"));
-        address1.setLines(lines1);
-        addresses.add(address1);
+        address1.add(new AddressLineJpaEntity("Address 1 Line 1"));
+        address1.add(new AddressLineJpaEntity("Address 1 Line 2"));
+        entity.add(address1);
 
         AddressJpaEntity address2 = new AddressJpaEntity();
         address2.setCountry("UK");
-        List<AddressLineJpaEntity> lines2 = new ArrayList<>();
-        lines2.add(new AddressLineJpaEntity("Address 2 Line 1"));
-        lines2.add(new AddressLineJpaEntity("Address 2 Line 2"));
-        lines2.add(new AddressLineJpaEntity("Address 2 Line 3"));
-        address2.setLines(lines2);
-        addresses.add(address2);
-        entity.setAddresses(addresses);
+        address2.add(new AddressLineJpaEntity("Address 2 Line 1"));
+        address2.add(new AddressLineJpaEntity("Address 2 Line 2"));
+        address2.add(new AddressLineJpaEntity("Address 2 Line 3"));
+        entity.add(address2);
 
         return entity;
     }

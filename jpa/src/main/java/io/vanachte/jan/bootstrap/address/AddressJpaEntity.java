@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class AddressJpaEntity {
 
     @ManyToMany(mappedBy = "addresses")
     @EqualsAndHashCode.Exclude
-    private Set<PersonJpaEntity> persons;
+    private Set<PersonJpaEntity> persons = new HashSet<>();
 
     public void add(AddressLineJpaEntity line) {
         if ( lines.contains(line)) {
@@ -44,14 +45,18 @@ public class AddressJpaEntity {
         if ( !persons.contains(person) ) {
             persons.add(person);
         }
-        person.add(this);
+        if ( !person.getAddresses().contains(this) ) {
+            person.add(this);
+        }
     }
 
     public void remove(PersonJpaEntity person) {
         if ( persons.contains(person) ) {
             persons.remove(person);
         }
-        person.remove(this);
+        if ( person.getAddresses().contains(this) ) {
+            person.remove(this);
+        }
     }
 
 }

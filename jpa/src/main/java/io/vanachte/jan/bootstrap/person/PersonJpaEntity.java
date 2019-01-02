@@ -10,6 +10,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 //import org.hibernate.annotations.NaturalId;
@@ -49,19 +50,23 @@ public class PersonJpaEntity implements Auditable {
             inverseJoinColumns = @JoinColumn(name = "address_id",referencedColumnName="id")
     )
     @EqualsAndHashCode.Exclude
-    private Set<AddressJpaEntity> addresses;
+    private Set<AddressJpaEntity> addresses = new HashSet<>();
 
     public void add(AddressJpaEntity address) {
         if( !addresses.contains(address) ) {
             addresses.add(address);
         }
-        address.add(this);
+        if ( !address.getPersons().contains(this) ) {
+            address.add(this);
+        }
     }
 
     public void remove(AddressJpaEntity address) {
         if ( addresses.contains(address) ) {
             addresses.remove(address);
         }
-        address.remove(this);
+        if ( address.getPersons().contains(this )) {
+            address.remove(this);
+        }
     }
 }

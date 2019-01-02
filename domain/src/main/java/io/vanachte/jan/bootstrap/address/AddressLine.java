@@ -1,9 +1,11 @@
 package io.vanachte.jan.bootstrap.address;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
+@EqualsAndHashCode
 public class AddressLine {
 
     @Setter

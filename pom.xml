@@ -21,15 +21,15 @@
 
         <module>domain-mapper</module>
 
-        <module>ws-rest-springboot</module>
-        <module>ws-soap-springboot</module>
-
         <module>javafx-springboot</module>
 
         <module>cucumber</module>
         <module>test-junit5</module>
         <module>jpa</module>
 
+        <module>ws-rest-forwarder</module>
+        <module>ws-rest-springboot</module>
+        <module>ws-soap-springboot</module>
     </modules>
 
     <parent>

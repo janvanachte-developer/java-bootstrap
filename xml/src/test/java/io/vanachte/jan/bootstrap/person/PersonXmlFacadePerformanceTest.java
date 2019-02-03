@@ -122,13 +122,13 @@ public class PersonXmlFacadePerformanceTest {
     }
 
     private void createXmlTestFiles() throws Exception {
-        createXml(10000, OUTPUT_FOLDER + File.separatorChar
+        createXml(10, OUTPUT_FOLDER + File.separatorChar
                 + "large-person-10000.xml");
         log.info("Completed generation of large XML with 10,000 entries...");
-        createXml(100000, OUTPUT_FOLDER + File.separatorChar
+        createXml(10, OUTPUT_FOLDER + File.separatorChar
                 + "large-person-100000.xml");
         log.info("Completed generation of large XML with 100,000 entries...");
-        createXml(1000000, OUTPUT_FOLDER + File.separatorChar
+        createXml(10, OUTPUT_FOLDER + File.separatorChar
                 + "large-person-1000000.xml");
         log.info("Completed generation of large XML with 1,000,000 entries...");
     }
